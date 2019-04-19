@@ -1,0 +1,87 @@
+<DOCTYPE !HTML>
+<html>
+  <head>
+    <Title>AutoTestUnit.cpp</Title>
+    <style>
+      body {
+        padding:15px 40px;
+        font-family: Consolas;
+        font-size: 1.25em;
+        font-weight: normal;
+      }
+			span {
+			        display:inline;
+				  }
+			div{
+				position:fixed;
+				top:10px;
+				right:10px;
+				}
+				.toggleClassDisplay {}
+				.toggleMethodDisplay {}
+				.toggleCommentsDisplay{}
+      </style>
+	 <script>
+	function showHideClass(className) {
+	let elems = document.getElementsByClassName(className);
+	if (elems === null) {
+		return;}
+	 for (let i = 0; i < elems.length; ++i) {
+		let displayProp = elems[i].style.display;
+		if (displayProp === 'none')
+			elems[i].style['display'] = "inline";
+		else
+		elems[i].style['display'] = "none";}}
+  </script
+  </head>
+
+  <body>
+    <h3>Dependencies: 
+      <a href="AutoTestUnit.h.html">AutoTestUnit.h</a>
+    </h3><div>
+<button onclick="showHideClass('toggleClassDisplay')">Show/Hide Class Contents
+</button>
+<button onclick="showHideClass('toggleMethodDisplay')">Show/Hide Method Contents
+</button>
+<button onclick = "showHideClass('toggleCommentsDisplay')">Show/Hide Comments Contenst
+</button>
+</div>
+    <pre>
+<span class="toggleCommentsDisplay">
+/////////////////////////////////////////////////////////////////////
+</span>
+<span class="toggleCommentsDisplay">
+// AutoTestUnit.cpp - Autotestunit								   //
+</span>
+<span class="toggleCommentsDisplay">
+// ver 1.0                                                         //
+</span>
+<span class="toggleCommentsDisplay">
+// Yihang Nan, CSE687 - Object Oriented Design, Fall 2018          //
+</span>
+<span class="toggleCommentsDisplay">
+/////////////////////////////////////////////////////////////////////
+</span>
+#include "AutoTestUnit.h"
+#ifdef DEMO_Auto
+<span class="toggleCommentsDisplay">
+//----------------&lt;test all requiremnts&gt;---------------
+</span>
+int main(int argc, char ** argv)
+<span class="toggleMethodDisplay">{
+{
+	Tests show;
+	show.test_case_1(argc,argv);
+	show.test_case_2(argc, argv);
+	show.test_case_3(argc, argv);
+	show.test_case_4(argc, argv);
+	show.test_case_5(argc, argv);
+	getchar();
+	getchar();
+	return 0;
+}
+</span>
+#endif
+    </pre>
+  </body>
+</html>

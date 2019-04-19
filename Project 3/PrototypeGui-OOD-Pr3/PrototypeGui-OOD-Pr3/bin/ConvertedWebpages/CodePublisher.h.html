@@ -1,0 +1,164 @@
+<DOCTYPE !HTML>
+<html>
+  <head>
+    <Title>CodePublisher.h</Title>
+    <style>
+      body {
+        padding:15px 40px;
+        font-family: Consolas;
+        font-size: 1.25em;
+        font-weight: normal;
+      }
+			span {
+			        display:inline;
+				  }
+			div{
+				position:fixed;
+				top:10px;
+				right:10px;
+				}
+				.toggleClassDisplay {}
+				.toggleMethodDisplay {}
+				.toggleCommentsDisplay{}
+      </style>
+	 <script>
+	function showHideClass(className) {
+	let elems = document.getElementsByClassName(className);
+	if (elems === null) {
+		return;}
+	 for (let i = 0; i < elems.length; ++i) {
+		let displayProp = elems[i].style.display;
+		if (displayProp === 'none')
+			elems[i].style['display'] = "inline";
+		else
+		elems[i].style['display'] = "none";}}
+  </script
+  </head>
+
+  <body>
+    <h3>Dependencies: 
+      <a href="Converter.h.html">Converter.h</a>
+      <a href="Display.h.html">Display.h</a>
+      <a href="DirExplorerN.h.html">DirExplorerN.h</a>
+      <a href="CodeUtilities.h.html">CodeUtilities.h</a>
+      <a href="Parser.h.html">Parser.h</a>
+    </h3><div>
+<button onclick="showHideClass('toggleClassDisplay')">Show/Hide Class Contents
+</button>
+<button onclick="showHideClass('toggleMethodDisplay')">Show/Hide Method Contents
+</button>
+<button onclick = "showHideClass('toggleCommentsDisplay')">Show/Hide Comments Contenst
+</button>
+</div>
+    <pre>
+#pragma once
+<span class="toggleCommentsDisplay">
+///////////////////////////////////////////////////////////////////////////
+</span>
+<span class="toggleCommentsDisplay">
+// CodePublisher.h : defines facade/executive for OOD Pr1 S19            //
+</span>
+<span class="toggleCommentsDisplay">
+// ver 1.0                                                               //
+</span>
+<span class="toggleCommentsDisplay">
+//                                                                       // 
+</span>
+<span class="toggleCommentsDisplay">
+// Application   : OOD-S19 Instructor Solution                           //
+</span>
+<span class="toggleCommentsDisplay">
+// Platform      : Visual Studio Community 2017, Windows 10 Pro x64      //
+</span>
+<span class="toggleCommentsDisplay">
+// Author        :	Ammar,  Syracuse University                          //
+</span>
+<span class="toggleCommentsDisplay">
+//					Yihang Nan, Syracuse University                      //
+</span>
+<span class="toggleCommentsDisplay">
+//                 3158630892, ynan02@syr.edu	                         //
+</span>
+<span class="toggleCommentsDisplay">
+///////////////////////////////////////////////////////////////////////////
+</span>
+<span class="toggleCommentsDisplay">
+/*
+*  Package Operations:
+* =======================
+*  This package defines CodePublisher which uses different components of
+*  CodeConverter, Display and DirectoryN to put together the entire 
+*  functionality of the CodePublisher. The mentioned packages are indep-
+*  ndent of each other and their only interaction is through this facade
+*
+*  NOTE: there are TWO modes for compiling this file:
+*   1) Preprocessor DEMO_CP : runs in full demo mode for Pr1.
+*   2) Preprocessor USE_CP  : runs normal functionality. 
+*
+*  Required Files:
+* =======================
+*  CodePublisher.h CodePublisher.cpp CodeUtilities.h
+*  Converter.h Converter.cpp DirExplorerN.h DirExplorerN.cpp
+*  Display.h Display.cpp Logger.h Logger.cpp 
+*
+*  Maintainence History:
+* =======================
+*  ver 1.0 - 14 Feb 2019
+*  - first release
+*/
+</span>
+
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+#include "../Converter/Converter.h"
+#include "../Display/Display.h"
+#include "../DirExplorer-Naive/DirExplorerN.h"
+#include "../Utilities/CodeUtilities/CodeUtilities.h"
+#include "../Parser/Parser.h"
+
+class CodePublisher
+<span class="toggleClassDisplay">
+{
+public:
+	CodePublisher();
+	CodePublisher(int argc, char* argv[]);
+	bool processCommandLineArgs(int argc, char** argv);
+
+	void workingDirectory(const std::string& dir);
+	const std::string& workingDirectory() const;
+
+	void outputDirectory(const std::string& dir);
+	const std::string& outputDirectory() const;
+
+	bool extractFiles();
+
+	void publish();
+	void publish(const std::string& file);
+	void publish(const std::vector&lt;std::string&gt;& files);
+	void pass_path_parser();
+	void display_files();
+
+	void add_files_fromGUI(std::vector&lt;std::string&gt; from_gui_files);
+	std::string get_command_path();
+	std::string get_browser_path();
+	std::vector&lt;std::string&gt; get_patterns();
+
+	Utilities::DisplayMode displayMode() const;
+
+private:
+	Utilities::ProcessCmdLine* pcl_;
+	CodeConverter cconv_;
+	Display display_;
+
+	std::string dirIn_;
+	std::string dirOut_;
+	std::vector&lt;std::string&gt; files_;
+	std::string command_path;
+	std::string browser_path;
+	std::vector&lt;std::string&gt; patterns ;
+};
+
+    </pre>
+  </body>
+</html>

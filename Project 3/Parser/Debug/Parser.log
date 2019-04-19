@@ -1,0 +1,11 @@
+﻿  ActionsAndRules.cpp
+C:\AmmarDemo_CodePublisher_Pr1\ScopeStack\ScopeStack.h(185): warning C5037: 'CodeAnalysis::ScopeStack<element>::TreeWalk': an out-of-line definition of a member of a class template cannot have default arguments
+  ConfigureParser.cpp
+C:\AmmarDemo_CodePublisher_Pr1\ScopeStack\ScopeStack.h(185): warning C5037: 'CodeAnalysis::ScopeStack<element>::TreeWalk': an out-of-line definition of a member of a class template cannot have default arguments
+C:\AmmarDemo_CodePublisher_Pr1\Parser\ConfigureParser.cpp(192): warning C4101: 'ex': unreferenced local variable
+  Generating Code...
+  Parser.cpp
+C:\AmmarDemo_CodePublisher_Pr1\ScopeStack\ScopeStack.h(185): warning C5037: 'CodeAnalysis::ScopeStack<element>::TreeWalk': an out-of-line definition of a member of a class template cannot have default arguments
+C:\AmmarDemo_CodePublisher_Pr1\Parser\Parser.cpp(95): warning C4018: '<': signed/unsigned mismatch
+C:\AmmarDemo_CodePublisher_Pr1\Parser\Parser.cpp(124): warning C4101: 'ex': unreferenced local variable
+  Parser.vcxproj -> C:\AmmarDemo_CodePublisher_Pr1\Debug\Parser.lib

@@ -1,0 +1,8 @@
+﻿  Converter.cpp
+C:\AmmarDemo_CodePublisher_Pr1\Converter\Converter.cpp(239): warning C4018: '<': signed/unsigned mismatch
+C:\AmmarDemo_CodePublisher_Pr1\Converter\Converter.cpp(242): warning C4129: '/': unrecognized character escape sequence
+C:\AmmarDemo_CodePublisher_Pr1\Converter\Converter.cpp(244): warning C4129: '/': unrecognized character escape sequence
+C:\AmmarDemo_CodePublisher_Pr1\Converter\Converter.cpp(264): warning C4129: '/': unrecognized character escape sequence
+C:\AmmarDemo_CodePublisher_Pr1\Converter\Converter.cpp(271): warning C4129: '/': unrecognized character escape sequence
+C:\AmmarDemo_CodePublisher_Pr1\Converter\Converter.cpp(276): warning C4129: '/': unrecognized character escape sequence
+  Converter.vcxproj -> C:\AmmarDemo_CodePublisher_Pr1\Debug\Converter.lib

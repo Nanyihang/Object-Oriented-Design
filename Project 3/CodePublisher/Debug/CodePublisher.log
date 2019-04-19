@@ -1,0 +1,3 @@
+﻿  CodePublisher.cpp
+C:\AmmarDemo_CodePublisher_Pr1\CodePublisher\CodePublisher.cpp(135): warning C4018: '<': signed/unsigned mismatch
+  CodePublisher.vcxproj -> C:\AmmarDemo_CodePublisher_Pr1\Debug\CodePublisher.lib

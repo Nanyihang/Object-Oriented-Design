@@ -1,0 +1,17 @@
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\bin\Debug\PrototypeGui-OOD-Pr4.exe.config
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\bin\Debug\PrototypeGui-OOD-Pr4.exe
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\bin\Debug\PrototypeGui-OOD-Pr4.pdb
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\obj\Debug\PrototypeGui-OOD-Pr4.csprojAssemblyReference.cache
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\obj\Debug\MainWindow.g.cs
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\obj\Debug\SelectionWindow.g.cs
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\obj\Debug\App.g.cs
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\obj\Debug\PrototypeGui-OOD-Pr4_MarkupCompile.cache
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\obj\Debug\PrototypeGui-OOD-Pr4_MarkupCompile.lref
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\obj\Debug\MainWindow.baml
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\obj\Debug\SelectionWindow.baml
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\obj\Debug\PrototypeGui-OOD-Pr4.g.resources
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\obj\Debug\PrototypeGui_OOD_Pr4.Properties.Resources.resources
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\obj\Debug\PrototypeGui-OOD-Pr4.csproj.GenerateResource.cache
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\obj\Debug\PrototypeGui-OOD-Pr4.csproj.CoreCompileInputs.cache
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\obj\Debug\PrototypeGui-OOD-Pr4.exe
+C:\su\CSE687\code\Project3HelpS2019\PrototypeGui-OOD-Pr3\PrototypeGui-OOD-Pr4\obj\Debug\PrototypeGui-OOD-Pr4.pdb

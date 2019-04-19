@@ -1,0 +1,30 @@
+
+                                      CodeAnalysis - Version 1.4
+    ==============================================================================================
+     Wed Mar  6 16:08:02 2019
+     Path: "C:\Users\nan\Desktop\AmmarDemo_CodePublisher_Pr1\Converter"
+     Args: Converter.h, /m, /r, /f
+                                                                               
+           Code Metrics - Start Line, Size (lines/code), and Complexity (number of scopes)
+    ==============================================================================================
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+                             namespace                   Global Namespace       1       1       2
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+               Converter.h       class                      CodeConverter      40      49       1
+              public data: std :: vector < std :: string > convert ( const std :: vector < std :: string > & files ) ; 
+
+                          Functions Exceeding Metric Limits and Public Data
+    ==============================================================================================
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+
+              public data: Converter.h : 53 - class CodeConverter
+                std :: vector < std :: string > convert ( const std :: vector < std :: string > & files ) ; 
+
+
+    searched     5 dirs
+   processed     1 files

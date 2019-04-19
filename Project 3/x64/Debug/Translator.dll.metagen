@@ -1,0 +1,31 @@
+ImageRuntimeVersion: v4.0.30319
+Assembly Translator, Version=1.0.*, Culture=Invariant Language (Invariant Country): 
+	hash=SHA1, flags=PublicKey
+Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Class ITranslator: AutoLayout, AnsiClass, Class, Public, Abstract, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    putString(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+    getString(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+    convertToSquares(List`1): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+Class TranslatorFactory: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    createTranslator(): PrivateScope, Public, Static, HideBySig
+Class Translator: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :ITranslator
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Methods:
+    putString(String): PrivateScope, Public, Virtual, HideBySig
+    getString(): PrivateScope, Public, Virtual, HideBySig
+    convertToSquares(List`1): PrivateScope, Public, Virtual, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig

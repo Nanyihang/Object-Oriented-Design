@@ -1,0 +1,561 @@
+<DOCTYPE !HTML>
+<html>
+  <head>
+    <Title>CodePublisher.cpp</Title>
+    <style>
+      body {
+        padding:15px 40px;
+        font-family: Consolas;
+        font-size: 1.25em;
+        font-weight: normal;
+      }
+			span {
+			        display:inline;
+				  }
+			div{
+				position:fixed;
+				top:10px;
+				right:10px;
+				}
+				.toggleClassDisplay {}
+				.toggleMethodDisplay {}
+				.toggleCommentsDisplay{}
+      </style>
+	 <script>
+	function showHideClass(className) {
+	let elems = document.getElementsByClassName(className);
+	if (elems === null) {
+		return;}
+	 for (let i = 0; i < elems.length; ++i) {
+		let displayProp = elems[i].style.display;
+		if (displayProp === 'none')
+			elems[i].style['display'] = "inline";
+		else
+		elems[i].style['display'] = "none";}}
+  </script
+  </head>
+
+  <body>
+    <h3>Dependencies: 
+      <a href="CodePublisher.h.html">CodePublisher.h</a>
+      <a href="Logger.h.html">Logger.h</a>
+    </h3><div>
+<button onclick="showHideClass('toggleClassDisplay')">Show/Hide Class Contents
+</button>
+<button onclick="showHideClass('toggleMethodDisplay')">Show/Hide Method Contents
+</button>
+<button onclick = "showHideClass('toggleCommentsDisplay')">Show/Hide Comments Contenst
+</button>
+</div>
+    <pre>
+<span class="toggleCommentsDisplay">
+///////////////////////////////////////////////////////////////////////////
+</span>
+<span class="toggleCommentsDisplay">
+// CodePublisher.cpp : defines facade/executive for OOD Pr1 S19          //
+</span>
+<span class="toggleCommentsDisplay">
+// ver 1.0                                                               //
+</span>
+<span class="toggleCommentsDisplay">
+//                                                                       // 
+</span>
+<span class="toggleCommentsDisplay">
+// Application   : OOD-S19 Instructor Solution                           //
+</span>
+<span class="toggleCommentsDisplay">
+// Platform      : Visual Studio Community 2017, Windows 10 Pro x64      //
+</span>
+<span class="toggleCommentsDisplay">
+// Author        :	Ammar,  Syracuse University                          //
+</span>
+<span class="toggleCommentsDisplay">
+//					Yihang Nan, Syracuse University                      //
+</span>
+<span class="toggleCommentsDisplay">
+//                 315-8630892, ynan02@syr.edu                           //
+</span>
+<span class="toggleCommentsDisplay">
+///////////////////////////////////////////////////////////////////////////
+</span>
+
+#include "CodePublisher.h"
+#include "../Logger/Logger.h"
+
+
+using namespace Utilities;
+using namespace Logging; 
+using namespace FileSystem;
+using namespace CodeAnalysis;
+
+ProcessCmdLine::Usage customUsage();
+
+CodePublisher::CodePublisher()
+<span class="toggleMethodDisplay">{
+{
+}
+</span>
+<span class="toggleCommentsDisplay">
+// ---------&lt;Function for return back the command path&gt;---------------
+</span>
+
+std::string CodePublisher::get_command_path()
+<span class="toggleMethodDisplay">{
+{
+	return command_path;
+}
+</span>
+
+<span class="toggleCommentsDisplay">
+// ---------&lt;Function for return back the browser path&gt;---------------
+</span>
+std::string CodePublisher::get_browser_path()
+<span class="toggleMethodDisplay">{
+{
+	return browser_path;
+}
+</span>
+<span class="toggleCommentsDisplay">
+// ---------&lt;Function for return back the patterns&gt;---------------
+</span>
+std::vector&lt;std::string&gt; CodePublisher::get_patterns()
+<span class="toggleMethodDisplay">{
+{
+	patterns.push_back(".cpp");
+	patterns.push_back(".h");
+	return patterns;
+}
+</span>
+void CodePublisher::add_files_fromGUI(std::vector&lt;std::string&gt; from_gui_files)
+<span class="toggleMethodDisplay">{
+{
+	files_ = from_gui_files;
+}
+</span>
+
+<span class="toggleCommentsDisplay">
+// -----&lt; process cmd to get info &gt;------------------------------------
+</span>
+bool CodePublisher::processCommandLineArgs(int argc, char ** argv)
+<span class="toggleMethodDisplay">{
+{
+  pcl_ = new ProcessCmdLine(argc, argv); 
+  pcl_-&gt;usage(customUsage());
+
+  preface("Command Line: ");
+  pcl_-&gt;showCmdLine();
+
+  if (pcl_-&gt;parseError())
+  {
+    pcl_-&gt;usage();
+    std::cout &lt;&lt; "\n\n";
+    return false;
+  }
+  dirIn_ = pcl_-&gt;path();
+  return true;
+}
+</span>
+
+<span class="toggleCommentsDisplay">
+// -----&lt; return input directory - from PCL &gt;----------------------------
+</span>
+const std::string & CodePublisher::workingDirectory() const
+<span class="toggleMethodDisplay">{
+{
+  return dirIn_;
+}
+</span>
+
+<span class="toggleCommentsDisplay">
+// -----&lt; set output directory &gt;-----------------------------------------
+</span>
+void CodePublisher::outputDirectory(const std::string & dir)
+<span class="toggleMethodDisplay">{
+{
+  dirOut_ = dir; 
+  cconv_.outputDir(dir);
+}
+</span>
+<span class="toggleCommentsDisplay">
+//--------------&lt;display files in consolo&gt;---------------
+</span>
+void CodePublisher::display_files()
+<span class="toggleMethodDisplay">{
+{
+	for (auto i : files_)
+		std::cout &lt;&lt; i &lt;&lt; std::endl;
+}
+</span>
+<span class="toggleCommentsDisplay">
+//--------------&lt;start up parser&gt;---------------
+</span>
+void CodePublisher::pass_path_parser()
+<span class="toggleMethodDisplay">{
+{
+	Parser *pParser = NULL;
+	for (auto file_ : files_)
+	{
+<span class="toggleCommentsDisplay">
+		pParser-&gt;Get_Head(file_); //files
+</span>
+	}
+
+}
+</span>
+
+<span class="toggleCommentsDisplay">
+// -----&lt; return output directory &gt;--------------------------------------
+</span>
+const std::string & CodePublisher::outputDirectory() const
+<span class="toggleMethodDisplay">{
+{
+  return dirOut_;
+}
+</span>
+
+<span class="toggleCommentsDisplay">
+// -----&lt; extract files - after processing cmd &gt;-------------------------
+</span>
+bool CodePublisher::extractFiles()
+<span class="toggleMethodDisplay">{
+{
+  DirExplorerN de(pcl_-&gt;path());
+
+  for (auto patt : pcl_-&gt;patterns())
+  {
+    de.addPattern(patt);
+	patterns.push_back(std::string(patt));
+  }
+ 
+
+  if (pcl_-&gt;hasOption("s"))
+  {
+    de.recurse();
+  }
+
+  bool res = de.search() && de.match_regexes(pcl_-&gt;regexes());
+  de.showStats();
+
+  files_ = de.filesList();
+
+  return res;
+}
+</span>
+
+
+<span class="toggleCommentsDisplay">
+// -----&lt; publish - files extracted from directory explorer &gt;---------------
+</span>
+void CodePublisher::publish()
+<span class="toggleMethodDisplay">{
+{
+  pass_path_parser();
+  std::vector&lt;std::string&gt; temp;
+  for (int i=0; i&lt; files_.size();i++)
+  {
+	  std::string Get_s = files_[i];
+	  Get_s = Get_s + ".html";
+	 
+	  int pos = Get_s.find_last_of("\\");
+<span class="toggleCommentsDisplay">
+	  //i.substr(pos + 1, i.size - pos - 1);
+</span>
+<span class="toggleCommentsDisplay">
+	  Get_s = "..//ConvertedWebpages//" + Get_s.substr(pos + 1, Get_s.size() - pos - 1);
+</span>
+	  temp.push_back(Get_s);
+	
+  }
+  display_.display(temp);
+<span class="toggleCommentsDisplay">
+  //display_.display(cconv_.convert(files_));
+</span>
+}
+</span>
+
+<span class="toggleCommentsDisplay">
+// -----&lt; publish - single file &gt;-------------------------------------------
+</span>
+void CodePublisher::publish(const std::string & file)
+<span class="toggleMethodDisplay">{
+{
+  display_.display(cconv_.convert(file));
+}
+</span>
+
+<span class="toggleCommentsDisplay">
+// -----&lt; publish - must provide list &gt;-------------------------------------
+</span>
+void CodePublisher::publish(const std::vector&lt;std::string&gt;& files)
+<span class="toggleMethodDisplay">{
+{
+  display_.display(cconv_.convert(files));
+}
+</span>
+
+<span class="toggleCommentsDisplay">
+// -----&lt; gets display mode as set by PCL &gt;---------------------------------
+</span>
+Utilities::DisplayMode CodePublisher::displayMode() const
+<span class="toggleMethodDisplay">{
+{
+  return pcl_-&gt;displayMode();
+}
+</span>
+
+
+<span class="toggleCommentsDisplay">
+// -----&lt; command line usage &gt;----------------------------------------------
+</span>
+ProcessCmdLine::Usage customUsage()
+<span class="toggleMethodDisplay">{
+{
+  std::string usage;
+  usage += "\n  Command Line: path [/option]* [/pattern]* [/regex]*";
+  usage += "\n    path is relative or absolute path where processing begins";
+  usage += "\n    [/option]* are one or more options of the form:";
+  usage += "\n      /s     - walk directory recursively";
+  usage += "\n      /demo  - run in demonstration mode (cannot coexist with /debug)";
+  usage += "\n      /debug - run in debug mode (cannot coexist with /demo)";
+<span class="toggleCommentsDisplay">
+  //usage += "\n      /h - hide empty directories";
+</span>
+<span class="toggleCommentsDisplay">
+  //usage += "\n      /a - on stopping, show all files in current directory";
+</span>
+  usage += "\n    [pattern]* are one or more pattern strings of the form:";
+  usage += "\n      *.h *.cpp *.cs *.txt or *.*";
+  usage += "\n    [regex] regular expression(s), i.e. [A-B](.*)";
+  usage += "\n";
+  return usage;
+}
+</span>
+
+<span class="toggleCommentsDisplay">
+// -----&lt; initialize loggers in proper display mode &gt;------------------------
+</span>
+<span class="toggleMethodDisplay">{
+void initializeLoggers(DisplayMode dm) {
+  if (dm == DisplayMode::Debug) {
+    LoggerDebug::attach(&std::cout);
+    LoggerDebug::start();
+  }
+
+  else if (dm == DisplayMode::Demo) {
+    LoggerDemo::attach(&std::cout);
+    LoggerDemo::start();
+  }
+}
+</span>
+
+<span class="toggleCommentsDisplay">
+// -----&lt; stop loggers &gt;-----------------------------------------------------
+</span>
+<span class="toggleMethodDisplay">{
+void stopLoggers() {
+  LoggerDemo::stop();
+  LoggerDebug::stop();
+}
+</span>
+
+#ifdef DEMO_CP
+
+#include &lt;iostream&gt;
+void demoReq1(CodePublisher& cp, int argc, char ** argv)
+<span class="toggleMethodDisplay">{
+{
+	LoggerDemo::write("Shall provide an Executive package that accepts,from its command line, a path containing files to be converted.");
+	LoggerDemo::write("Answer:");
+	cp.processCommandLineArgs(argc, argv);
+
+}
+</span>
+<span class="toggleCommentsDisplay">
+// -----&lt; demonstrate requirement 3 &gt;----------------------------------------------
+</span>
+<span class="toggleMethodDisplay">{
+void demoReq3() {
+  LoggerDemo::write("\n");
+  LoggerDemo::title("Demonstrating Requirement #3 - Packages");
+  LoggerDemo::write("\n  Converter & Display packages are available. Executive was replaced with ");
+  LoggerDemo::write("\n  CodePublisher which also acts as facade for the entire project.\n");
+}
+</span>
+
+
+<span class="toggleCommentsDisplay">
+// -----&lt; demonstrate requirements 4 and 5 &gt;---------------------------------------
+</span>
+<span class="toggleMethodDisplay">{
+int demoReq45(CodePublisher& cp, int argc, char ** argv) {
+  LoggerDemo::write("\n");
+  LoggerDemo::title("Demonstrating Requirements #4 & #5 - command line arguments");
+  LoggerDemo::write(customUsage());
+
+<span class="toggleCommentsDisplay">
+  if (argc &lt; 2) return 1; // even before processing, if no path, just reject it
+</span>
+
+  LoggerDemo::write("\n  Changing cmd path to ../debug to test Requirement 5\n");
+
+<span class="toggleCommentsDisplay">
+  // cmd has the path always as first arg... we so change it to find no files
+</span>
+  char * tmp = new char[sizeof(argv[1])];
+  strcpy_s(tmp, sizeof(tmp), argv[1]);
+  argv[1] = new char[9];
+<span class="toggleCommentsDisplay">
+  strcpy_s(argv[1], 9, "../debug"); // no files will be found matching this
+</span>
+  
+<span class="toggleCommentsDisplay">
+  if (!cp.processCommandLineArgs(argc, argv)) return 1; // just in case
+</span>
+
+  if (!cp.extractFiles()) {
+    LoggerDemo::write("\n\n  No files found in the current directory. We will ");
+    LoggerDemo::write("\n  continue since we deliberately changed argv[1] to ");
+    LoggerDemo::write("\n  test Requirement 5. After restoring argv[1], if there ");
+    LoggerDemo::write("\n  are no files to process, the program will terminate. \n");
+  }
+
+  LoggerDemo::write("\n\n  Changing back cmd path to original to continue demonstartion.\n");
+  delete argv[1];
+  argv[1] = tmp;
+
+<span class="toggleCommentsDisplay">
+  if (!cp.processCommandLineArgs(argc, argv)) return 1; // just in case
+</span>
+<span class="toggleCommentsDisplay">
+  if (!cp.extractFiles()) { // if this fails, then there are no files to process at all
+</span>
+<span class="toggleCommentsDisplay">
+    return 2; // the demo will end after this
+</span>
+  }
+
+  return 0;
+}
+</span>
+
+<span class="toggleCommentsDisplay">
+// -----&lt; demonstrate requirements 6 and 7 &gt;------------------------------
+</span>
+<span class="toggleMethodDisplay">{
+void demoReq67(CodePublisher& cp) {
+  LoggerDemo::write("\n");
+  LoggerDemo::title("Demonstrating Requirements #6 & #7 - Convert and Display");
+  cp.publish();
+}
+</span>
+
+
+<span class="toggleCommentsDisplay">
+// -----&lt; demonstrate requirement 8 &gt;-------------------------------------
+</span>
+<span class="toggleMethodDisplay">{
+void demoReq8() {
+  LoggerDemo::write("\n");
+  LoggerDemo::title("Demonstrating Requirement #8 - Automated Test Unit");
+  LoggerDemo::write("\n  Well, this is the automated test unit.");
+  LoggerDemo::write("\n\n  All Requirements met. ");
+
+}
+</span>
+
+
+
+<span class="toggleCommentsDisplay">
+// -----&lt; DEMONSTRATION MAIN &gt;---------------------------------------------
+</span>
+<span class="toggleMethodDisplay">{
+int main(int argc, char ** argv) {
+<span class="toggleCommentsDisplay">
+  // the following processing of cmd is not official, it's only
+</span>
+<span class="toggleCommentsDisplay">
+  // done to allow for demo/debug modes BEFORE CodePublisher does
+</span>
+<span class="toggleCommentsDisplay">
+  // its own processing of cmds..
+</span>
+
+<span class="toggleCommentsDisplay">
+  initializeLoggers(Utilities::DisplayMode::Debug); // by default go debug
+</span>
+  for (int i = 0; i &lt; argc; i++) {
+    std::string arg = argv[i];
+<span class="toggleCommentsDisplay">
+    if (arg == "/demo") { // only go demo once told 
+</span>
+      stopLoggers();
+      initializeLoggers(Utilities::DisplayMode::Demo);
+      break;
+    }
+  }
+  CodePublisher cp;
+  Symbol();
+<span class="toggleCommentsDisplay">
+  //demoReq1(cp,argc,argv);
+</span>
+  Symbol();
+  demoReq3();
+  
+<span class="toggleCommentsDisplay">
+  //CodePublisher cp;
+</span>
+
+  int err = demoReq45(cp, argc, argv);
+  if (err == 1) {
+    LoggerDemo::write("\n  Invalid command line args.\n  Ending demonstration...\n");
+    return 1;
+  }
+  else if (err == 2) {
+    LoggerDemo::write("\n  The given path has no files matching patterns and/or regexes.");
+    LoggerDemo::write("\n  Ending demonstration...\n");
+    return 2;
+  }
+  
+  demoReq67(cp);
+  demoReq8();
+
+  stopLoggers();
+  return 0;
+}
+</span>
+
+#endif
+
+#ifdef USE_CP
+
+#include &lt;iostream&gt;
+
+<span class="toggleCommentsDisplay">
+// -----&lt; NORMAL USE MAIN &gt; ------------------------------------------
+</span>
+<span class="toggleMethodDisplay">{
+int main(int argc, char ** argv) {
+  CodePublisher cp;
+  if (!cp.processCommandLineArgs(argc, argv)) {
+    std::cout &lt;&lt; "\n  Failed to process command line arguments. Terminating\n\n";
+    return 1;
+  }
+
+  initializeLoggers(cp.displayMode());
+
+  if (!cp.extractFiles()) {
+    stopLoggers();
+    std::cout &lt;&lt; "\n  Found no files to process. Terminating.\n\n";
+    return 0; 
+  }
+
+  cp.publish();
+  stopLoggers();
+  return 0;
+}
+</span>
+
+#endif
+    </pre>
+  </body>
+</html>

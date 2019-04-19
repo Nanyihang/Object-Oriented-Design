@@ -1,0 +1,14 @@
+D:\BO_QIu_PJ3\Project3\AutoTestUnit\bin\Debug\AutoTestUnit.exe.config
+D:\BO_QIu_PJ3\Project3\AutoTestUnit\bin\Debug\AutoTestUnit.exe
+D:\BO_QIu_PJ3\Project3\AutoTestUnit\bin\Debug\AutoTestUnit.pdb
+D:\BO_QIu_PJ3\Project3\AutoTestUnit\obj\Debug\AutoTestUnit.csprojAssemblyReference.cache
+D:\BO_QIu_PJ3\Project3\AutoTestUnit\obj\Debug\AutoTestUnit.csproj.CoreCompileInputs.cache
+D:\BO_QIu_PJ3\Project3\AutoTestUnit\obj\Debug\AutoTestUnit.exe
+D:\BO_QIu_PJ3\Project3\AutoTestUnit\obj\Debug\AutoTestUnit.pdb
+C:\AmmarDemo_CodePublisher_Pr1\AutoTestUnit\bin\Debug\AutoTestUnit.exe.config
+C:\AmmarDemo_CodePublisher_Pr1\AutoTestUnit\bin\Debug\AutoTestUnit.exe
+C:\AmmarDemo_CodePublisher_Pr1\AutoTestUnit\bin\Debug\AutoTestUnit.pdb
+C:\AmmarDemo_CodePublisher_Pr1\AutoTestUnit\obj\Debug\AutoTestUnit.csprojAssemblyReference.cache
+C:\AmmarDemo_CodePublisher_Pr1\AutoTestUnit\obj\Debug\AutoTestUnit.csproj.CoreCompileInputs.cache
+C:\AmmarDemo_CodePublisher_Pr1\AutoTestUnit\obj\Debug\AutoTestUnit.exe
+C:\AmmarDemo_CodePublisher_Pr1\AutoTestUnit\obj\Debug\AutoTestUnit.pdb

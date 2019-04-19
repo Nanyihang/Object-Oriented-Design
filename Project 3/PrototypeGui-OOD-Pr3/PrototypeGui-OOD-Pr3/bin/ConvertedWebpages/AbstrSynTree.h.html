@@ -1,0 +1,277 @@
+<DOCTYPE !HTML>
+<html>
+  <head>
+    <Title>AbstrSynTree.h</Title>
+    <style>
+      body {
+        padding:15px 40px;
+        font-family: Consolas;
+        font-size: 1.25em;
+        font-weight: normal;
+      }
+			span {
+			        display:inline;
+				  }
+			div{
+				position:fixed;
+				top:10px;
+				right:10px;
+				}
+				.toggleClassDisplay {}
+				.toggleMethodDisplay {}
+				.toggleCommentsDisplay{}
+      </style>
+	 <script>
+	function showHideClass(className) {
+	let elems = document.getElementsByClassName(className);
+	if (elems === null) {
+		return;}
+	 for (let i = 0; i < elems.length; ++i) {
+		let displayProp = elems[i].style.display;
+		if (displayProp === 'none')
+			elems[i].style['display'] = "inline";
+		else
+		elems[i].style['display'] = "none";}}
+  </script
+  </head>
+
+  <body>
+    <h3>Dependencies: 
+      <a href="ITokenCollection.h.html">ITokenCollection.h</a>
+      <a href="ScopeStack.h.html">ScopeStack.h</a>
+    </h3><div>
+<button onclick="showHideClass('toggleClassDisplay')">Show/Hide Class Contents
+</button>
+<button onclick="showHideClass('toggleMethodDisplay')">Show/Hide Method Contents
+</button>
+<button onclick = "showHideClass('toggleCommentsDisplay')">Show/Hide Comments Contenst
+</button>
+</div>
+    <pre>
+#pragma once
+<span class="toggleCommentsDisplay">
+/////////////////////////////////////////////////////////////////////
+</span>
+<span class="toggleCommentsDisplay">
+//  AbstrSynTree.h - Represents an Abstract Syntax Tree            //
+</span>
+<span class="toggleCommentsDisplay">
+//  ver 1.4                                                        //
+</span>
+<span class="toggleCommentsDisplay">
+//  Language:      Visual C++ 2015                                 //
+</span>
+<span class="toggleCommentsDisplay">
+//  Platform:      Dell XPS 8900, Windows 10                       //
+</span>
+<span class="toggleCommentsDisplay">
+//  Application:   Used to support parsing source code             //
+</span>
+<span class="toggleCommentsDisplay">
+//  Author:        Jim Fawcett, CST 4-187, Syracuse University     //
+</span>
+<span class="toggleCommentsDisplay">
+//                 (315) 443-3948, jfawcett@twcny.rr.com           //
+</span>
+<span class="toggleCommentsDisplay">
+/////////////////////////////////////////////////////////////////////
+</span>
+<span class="toggleCommentsDisplay">
+/*
+  Package Operations:
+  ==================
+  This package defines an AbstrSynTree class and an ASTNode struct.  
+  Those provides support for building Abstract Syntax Trees during 
+  static source code analysis.
+
+  Public Interface:
+  =================
+<span class="toggleCommentsDisplay">
+  AbstrSynTree ast(scopeStack);       // create instance, passing in ScopeStack
+</span>
+<span class="toggleCommentsDisplay">
+  ASTNode* pNode = ast.root();        // get or set root of AST
+</span>
+<span class="toggleCommentsDisplay">
+  ast.add(pNode);                     // add ASTNode to tree, linked to current scope
+</span>
+<span class="toggleCommentsDisplay">
+  ASTNode* pNode = ast.find(myType);  // retrieve ptr to ASTNode representing myType
+</span>
+<span class="toggleCommentsDisplay">
+  ast.pop();                          // close current scope by poping top of scopeStack
+</span>
+
+  Build Process:
+  ==============
+  Required files
+  - AbstrSynTree.h, AbstrSynTree.cpp, Utilities.h, Utilities.cpp
+
+  Build commands (either one)
+  - devenv CodeAnalysis.sln
+  - cl /EHsc /DTEST_ABSTRSYNTREE AbstrSynTree.cpp Utilities.cpp /link setargv.obj
+
+  Maintenance History:
+  ====================
+  ver 1.4 : 26 Feb 2017
+  - added parentType_ member to support better grammar analysis
+  ver 1.3 : 29 Oct 2016
+  - added throw in ScopeStack if pop or peek empty stack
+  ver 1.2 : 28 Oct 2016
+  - added test for interface in show() and Add(ASTNode*)
+  ver 1.1 : 22 Aug 2016
+  - added access type and declaration type enumerations
+  - added processing to store access level in AST
+  - added more prologue comments
+  ver 1.0 : 05 Aug 2016
+  - first release
+
+*/
+</span>
+
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;sstream&gt;
+#include &lt;unordered_map&gt;
+#include &lt;functional&gt;
+#include "../SemiExpression/ITokenCollection.h"
+#include "../ScopeStack/ScopeStack.h"
+
+namespace CodeAnalysis
+{
+  enum Access 
+  { 
+    publ, prot, priv 
+  };
+
+  enum DeclType 
+  { 
+    dataDecl, functionDecl, lambdaDecl, usingDecl 
+  };
+
+  struct DeclarationNode
+  {
+    Lexer::ITokenCollection* pTc = nullptr;
+    Access access_;
+    DeclType declType_;
+    std::string package_;
+    size_t line_;
+  };
+
+  struct ASTNode
+  {
+    using Type = std::string;
+    using Name = std::string;
+    using Package = std::string;
+    using Path = std::string;
+
+    ASTNode();
+    ASTNode(const Type& type, const Name& name);
+    ~ASTNode();
+    Type type_;
+    Type parentType_;
+    Name name_;
+    Package package_;
+    Path path_;
+    size_t startLineCount_;
+    size_t endLineCount_;
+    size_t complexity_;
+    std::vector&lt;ASTNode*&gt; children_;
+    std::vector&lt;DeclarationNode&gt; decl_;
+    std::vector&lt;Lexer::ITokenCollection*&gt; statements_;
+    std::string show(bool details = false);
+  };
+
+  class AbstrSynTree
+<span class="toggleClassDisplay">
+  {
+  public:
+    using ClassName = std::string;
+    using TypeMap = std::unordered_map&lt;ClassName, ASTNode*&gt;;
+
+    AbstrSynTree(ScopeStack&lt;ASTNode*&gt;& stack);
+    ~AbstrSynTree();
+    ASTNode*& root();
+    void add(ASTNode* pNode);
+    ASTNode* find(const ClassName& type);
+    ASTNode* pop();
+    TypeMap& typeMap();
+  private:
+    TypeMap typeMap_;
+    ScopeStack&lt;ASTNode*&gt;& stack_;
+    ASTNode* pGlobalNamespace_;
+  };
+<span class="toggleCommentsDisplay">
+  //----&lt; traverse AST and execute callobj on every node &gt;-------------
+</span>
+</span>
+
+  template &lt;typename CallObj&gt;
+  void ASTWalk(ASTNode* pItem, CallObj co)
+<span class="toggleMethodDisplay">{
+  {
+    static size_t indentLevel = 0;
+    co(pItem, indentLevel);
+    auto iter = pItem-&gt;children_.begin();
+    ++indentLevel;
+    while (iter != pItem-&gt;children_.end())
+    {
+      ASTWalk(*iter, co);
+      ++iter;
+    }
+    --indentLevel;
+  }
+</span>
+<span class="toggleCommentsDisplay">
+  //----&lt; traverse AST and execute callobj on every node &gt;-------------
+</span>
+
+  template &lt;typename CallObj&gt;
+  void ASTWalkNoIndent(ASTNode* pItem, CallObj co)
+<span class="toggleMethodDisplay">{
+  {
+    co(pItem);
+    auto iter = pItem-&gt;children_.begin();
+    while (iter != pItem-&gt;children_.end())
+    {
+      ASTWalkNoIndent(*iter, co);
+      ++iter;
+    }
+  }
+</span>
+<span class="toggleCommentsDisplay">
+  //----&lt; compute complexities for each ASTNode &gt;--------------------
+</span>
+
+  inline void complexityWalk(ASTNode* pItem, size_t& count)
+<span class="toggleMethodDisplay">{
+  {
+    size_t inCount = ++count;
+    auto iter = pItem-&gt;children_.begin();
+    while (iter != pItem-&gt;children_.end())
+    {
+      complexityWalk(*iter, count);
+      ++iter;
+    }
+    pItem-&gt;complexity_ = count - inCount + 1;
+  }
+</span>
+<span class="toggleCommentsDisplay">
+  //----&lt; compute complexities for each ASTNode &gt;--------------------
+</span>
+
+  inline void complexityEval(ASTNode* pNode)
+<span class="toggleMethodDisplay">{
+  {
+    size_t initialCount = 0;
+    complexityWalk(pNode, initialCount);
+  }
+</span>
+}
+
+struct foobar {
+
+};
+    </pre>
+  </body>
+</html>

@@ -1,0 +1,4 @@
+﻿  Translator.cpp
+  AssemblyInfo.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
+FileSystemDemo.lib(FileSystem.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
+  Translator.vcxproj -> C:\AmmarDemo_CodePublisher_Pr1\Debug\Translator.dll
