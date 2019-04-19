@@ -1,0 +1,48 @@
+
+                                      CodeAnalysis - Version 1.4
+    ==============================================================================================
+     Wed Mar  6 16:04:22 2019
+     Path: "C:\Users\nan\Desktop\AmmarDemo_CodePublisher_Pr1\CodePublisher"
+     Args: CodePublisher.cpp, /m, /r, /f
+                                                                               
+           Code Metrics - Start Line, Size (lines/code), and Complexity (number of scopes)
+    ==============================================================================================
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+                             namespace                   Global Namespace       1       1      38
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+         CodePublisher.cpp    function                      CodePublisher      23       2       1
+         CodePublisher.cpp    function             processCommandLineArgs      28      16       2
+         CodePublisher.cpp    function                   workingDirectory      47       3       1
+         CodePublisher.cpp    function                    outputDirectory      53       4       1
+         CodePublisher.cpp    function                      display_files      59       4       1
+         CodePublisher.cpp    function                   pass_path_parser      65       8       2
+         CodePublisher.cpp    function                    outputDirectory      76       3       1
+         CodePublisher.cpp    function                       extractFiles      82      20       3
+         CodePublisher.cpp    function                            publish     106      17       2
+         CodePublisher.cpp    function                            publish     126       3       1
+         CodePublisher.cpp    function                            publish     132       3       1
+         CodePublisher.cpp    function                        displayMode     138       3       1
+         CodePublisher.cpp    function                        customUsage     145      16       1
+         CodePublisher.cpp    function                  initializeLoggers     163      11       3
+         CodePublisher.cpp    function                        stopLoggers     176       4       1
+         CodePublisher.cpp    function                           demoReq1     185       6       1
+         CodePublisher.cpp    function                           demoReq3     192       6       1
+         CodePublisher.cpp    function                          demoReq45     201      35       3
+         CodePublisher.cpp    function                          demoReq67     238       5       1
+         CodePublisher.cpp    function                           demoReq8     246       7       1
+         CodePublisher.cpp    function                               main     257      39       5
+         CodePublisher.cpp    function                               main     304      19       3
+
+                          Functions Exceeding Metric Limits and Public Data
+    ==============================================================================================
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+
+
+
+    searched     5 dirs
+   processed     1 files

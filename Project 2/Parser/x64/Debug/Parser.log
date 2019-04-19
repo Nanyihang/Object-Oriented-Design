@@ -1,0 +1,4 @@
+﻿  Parser.cpp
+c:\users\61619\downloads\pj2\ammardemo_codepublisher_pr1\scopestack\scopestack.h(185): warning C5037: 'CodeAnalysis::ScopeStack<element>::TreeWalk': an out-of-line definition of a member of a class template cannot have default arguments
+c:\users\61619\downloads\pj2\ammardemo_codepublisher_pr1\parser\parser.cpp(124): warning C4101: 'ex': unreferenced local variable
+c:\users\61619\downloads\pj2\ammardemo_codepublisher_pr1\parser\parser.cpp(237): error C3861: 'TreeWalk': identifier not found

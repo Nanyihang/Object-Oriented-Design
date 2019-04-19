@@ -1,0 +1,5 @@
+﻿  FileSystem.cpp
+c:\users\61619\downloads\pj2\ammardemo_codepublisher_pr1\filesystem\filesystem.cpp(1175): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  DirExplorerN.cpp
+c:\users\61619\downloads\pj2\ammardemo_codepublisher_pr1\direxplorer-naive\direxplorern.cpp(258): fatal error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  Generating Code...

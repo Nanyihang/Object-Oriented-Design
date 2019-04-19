@@ -1,0 +1,36 @@
+
+                                      CodeAnalysis - Version 1.4
+    ==============================================================================================
+     Wed Mar  6 16:02:07 2019
+     Path: "C:\Users\nan\Desktop\AmmarDemo_CodePublisher_Pr1\Parser"
+     Args: Parser.cpp, /m, /r, /f
+                                                                               
+           Code Metrics - Start Line, Size (lines/code), and Complexity (number of scopes)
+    ==============================================================================================
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+                             namespace                   Global Namespace       1       1      39
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+                Parser.cpp   namespace                       CodeAnalysis      27      99      23
+                Parser.cpp    function                            addRule      32       3       1
+                Parser.cpp    function                               next      38      11       2
+                Parser.cpp    function                              parse      53       9       2
+                Parser.cpp    function                          addAction      65       3       1
+                Parser.cpp    function                          doActions      71       5       1
+                Parser.cpp    function                           Get_Head      77      48      15
+                Parser.cpp    function                               main     138     111      15
+
+                          Functions Exceeding Metric Limits and Public Data
+    ==============================================================================================
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+                Parser.cpp    function                           Get_Head      77      48      15
+                Parser.cpp    function                               main     138     111      15
+
+
+
+    searched     5 dirs
+   processed     1 files

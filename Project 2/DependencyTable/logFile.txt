@@ -1,0 +1,42 @@
+
+                                      CodeAnalysis - Version 1.4
+    ==============================================================================================
+     Wed Mar  6 16:10:00 2019
+     Path: "C:\Users\nan\Desktop\AmmarDemo_CodePublisher_Pr1\DependencyTable"
+     Args: DependencyTable.cpp, /m, /r, /f
+                                                                               
+           Code Metrics - Start Line, Size (lines/code), and Complexity (number of scopes)
+    ==============================================================================================
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+                             namespace                   Global Namespace       1       1      18
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+       DependencyTable.cpp    function                    DependencyTable      18       3       1
+       DependencyTable.cpp    function                    DependencyTable      25       6       1
+       DependencyTable.cpp    function                          get_table      34       3       1
+       DependencyTable.cpp    function                   ~DependencyTable      38       3       1
+       DependencyTable.cpp    function                                has      44       3       1
+       DependencyTable.cpp    function                           get_file      49       3       1
+       DependencyTable.cpp    function                      addDependency      54       8       1
+       DependencyTable.cpp    function                   removeDependency      65       7       1
+       DependencyTable.cpp    function                        removeEntry      75       6       1
+       DependencyTable.cpp    function                    getDependencies      84       3       1
+       DependencyTable.cpp    function                         operator[]      90       3       1
+       DependencyTable.cpp    function                              begin      96       3       1
+       DependencyTable.cpp    function                                end     102       3       1
+       DependencyTable.cpp    function                           getFiles     108       6       1
+       DependencyTable.cpp    function                            display     117      11       2
+       DependencyTable.cpp    function                               main     135      24       1
+
+                          Functions Exceeding Metric Limits and Public Data
+    ==============================================================================================
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+
+
+
+    searched     5 dirs
+   processed     1 files
