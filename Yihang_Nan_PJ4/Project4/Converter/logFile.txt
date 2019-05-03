@@ -1,0 +1,30 @@
+
+                                      CodeAnalysis - Version 1.4
+    ==============================================================================================
+     Tue Mar  5 15:09:57 2019
+     Path: "D:\CSE687\Project2\Converter"
+     Args: Converter.cpp, /m, /r, /f
+                                                                               
+           Code Metrics - Start Line, Size (lines/code), and Complexity (number of scopes)
+    ==============================================================================================
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+                             namespace                   Global Namespace       1       1      19
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+             Converter.cpp    function                          CTreeWalk      36      49      10
+             Converter.cpp    function                   Comment_hide_tag      87      38       6
+             Converter.cpp    function                               main     131     133       2
+
+                          Functions Exceeding Metric Limits and Public Data
+    ==============================================================================================
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+             Converter.cpp    function                               main     131     133       2
+
+
+
+    searched     3 dirs
+   processed     1 files

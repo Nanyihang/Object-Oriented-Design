@@ -1,0 +1,364 @@
+<!Doctype html> 
+<html> 
+<head> 
+
+<style> 
+body {
+padding:15px 40px;
+font-family: Consolas;
+font-size: 1.25em;
+font-weight: normal;
+}
+span{
+display:inline;
+}
+div{
+position:fixed;
+top:10px;
+right:10px;
+}
+.toggleClassDisplay{}
+.toggleMethodDisplay{}
+.toggleCommentsDisplay{}
+
+</style> 
+<script> 
+function showHideClass(className) {
+let elems = document.getElementsByClassName(className);
+if (elems === null) {
+return;
+}
+for (let i = 0; i < elems.length; ++i) {
+let displayProp = elems[i].style.display;
+if (displayProp === 'none')
+elems[i].style['display'] = "inline";
+else
+elems[i].style['display'] = "none";
+    }
+}
+
+</script> 
+</head> 
+<body> 
+<div> 
+<button onclick="showHideClass('toggleClassDisplay')">Show/Hide Class Contents
+</button>
+<button onclick = "showHideClass('toggleMethodDisplay')">Show/Hide Method Contents
+</button>
+<button onclick = "showHideClass('toggleCommentsDisplay')">Show/Hide Comments Contenst
+</button>
+
+</div> 
+<pre> 
+<span class="toggleCommentsDisplay">/////////////////////////////////////////////////////////////////////</span>
+<span class="toggleCommentsDisplay">//&nbsp;DateTime.cpp&nbsp;-&nbsp;represents&nbsp;clock&nbsp;time&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">//&nbsp;ver&nbsp;1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">//&nbsp;Jim&nbsp;Fawcett,&nbsp;CSE687&nbsp;-&nbsp;Object&nbsp;Oriented&nbsp;Design,&nbsp;Spring&nbsp;2017&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">/////////////////////////////////////////////////////////////////////</span>
+
+#include&nbsp;&quot;DateTime.h&quot;
+#include&nbsp;&lt;string&gt;
+#include&nbsp;&lt;iomanip&gt;
+#include&nbsp;&lt;sstream&gt;
+#include&nbsp;&lt;iostream&gt;
+#include&nbsp;&lt;unordered_map&gt;
+
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;replaces&nbsp;std::ctime&nbsp;using&nbsp;ctime_s&nbsp;&gt;--------------------------</span>
+
+char*&nbsp;DateTime::ctime(const&nbsp;std::time_t*&nbsp;pTime)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;const&nbsp;rsize_t&nbsp;buffSize&nbsp;=&nbsp;26;
+&nbsp;&nbsp;static&nbsp;char&nbsp;buffer[buffSize];
+&nbsp;&nbsp;errno_t&nbsp;err&nbsp;=&nbsp;ctime_s(buffer,&nbsp;buffSize,&nbsp;pTime);
+&nbsp;&nbsp;return&nbsp;buffer;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;replaces&nbsp;std::localtime&nbsp;using&nbsp;localtime_s&nbsp;&gt;------------------</span>
+
+std::tm*&nbsp;DateTime::localtime(const&nbsp;std::time_t*&nbsp;pTime)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;static&nbsp;std::tm&nbsp;result;
+&nbsp;&nbsp;errno_t&nbsp;err&nbsp;=&nbsp;localtime_s(&amp;result,&nbsp;pTime);
+&nbsp;&nbsp;return&nbsp;&amp;result;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;construct&nbsp;DateTime&nbsp;instance&nbsp;with&nbsp;current&nbsp;system&nbsp;time&nbsp;&gt;-------</span>
+
+DateTime::DateTime()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;tp_&nbsp;=&nbsp;SysClock::now();
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;construct&nbsp;DateTime&nbsp;from&nbsp;formatted&nbsp;time&nbsp;string&nbsp;&gt;--------------</span>
+<span class="toggleCommentsDisplay">/*&nbsp;
+&nbsp;*&nbsp;Helper&nbsp;function&nbsp;that&nbsp;reads&nbsp;each&nbsp;part&nbsp;of&nbsp;the&nbsp;formatted&nbsp;string&nbsp;
+&nbsp;*/</span>
+int&nbsp;readDateTimePart(int&amp;&nbsp;part,&nbsp;std::istringstream&amp;&nbsp;in)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;if&nbsp;(in.peek()&nbsp;==&nbsp;':')
+&nbsp;&nbsp;&nbsp;&nbsp;in.get();
+&nbsp;&nbsp;in&nbsp;&gt;&gt;&nbsp;part;
+&nbsp;&nbsp;<span class="toggleCommentsDisplay">//std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n&nbsp;&nbsp;--&nbsp;part&nbsp;=&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;part&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;--&quot;;</span>
+&nbsp;&nbsp;if&nbsp;(in.good())
+&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;part;
+&nbsp;&nbsp;return&nbsp;-1;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;makes&nbsp;a&nbsp;DateTime&nbsp;instance&nbsp;from&nbsp;a&nbsp;formatted&nbsp;string&nbsp;&gt;----------</span>
+<span class="toggleCommentsDisplay">/*
+*&nbsp;&nbsp;Throws&nbsp;exception&nbsp;if&nbsp;string&nbsp;is&nbsp;an&nbsp;invalid&nbsp;DateTime&nbsp;string
+*/</span>
+DateTime::DateTime(std::string&nbsp;dtStr)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;static&nbsp;std::unordered_map&lt;std::string,&nbsp;size_t&gt;&nbsp;months&nbsp;=&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&quot;Jan&quot;,&nbsp;1&nbsp;},&nbsp;{&nbsp;&quot;Feb&quot;,&nbsp;2&nbsp;},&nbsp;{&nbsp;&quot;Mar&quot;,&nbsp;3&nbsp;},&nbsp;{&nbsp;&quot;Apr&quot;,&nbsp;4&nbsp;},&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&quot;May&quot;,&nbsp;5&nbsp;},&nbsp;{&nbsp;&quot;Jun&quot;,&nbsp;6&nbsp;},&nbsp;{&nbsp;&quot;Jul&quot;,&nbsp;7&nbsp;},&nbsp;{&nbsp;&quot;Aug&quot;,&nbsp;8&nbsp;},&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&quot;Sep&quot;,&nbsp;9&nbsp;},&nbsp;{&nbsp;&quot;Oct&quot;,&nbsp;10&nbsp;},&nbsp;{&nbsp;&quot;Nov&quot;,&nbsp;11&nbsp;},&nbsp;{&nbsp;&quot;Dec&quot;,&nbsp;12&nbsp;}&nbsp;
+&nbsp;&nbsp;};
+&nbsp;&nbsp;std::istringstream&nbsp;in(dtStr);
+&nbsp;&nbsp;std::string&nbsp;day,&nbsp;month;
+&nbsp;&nbsp;in&nbsp;&gt;&gt;&nbsp;day;
+&nbsp;&nbsp;in&nbsp;&gt;&gt;&nbsp;month;
+&nbsp;&nbsp;if&nbsp;(!in.good())
+&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;std::exception(&quot;invalid&nbsp;DateTime&nbsp;string&quot;);
+&nbsp;&nbsp;std::tm&nbsp;date;
+&nbsp;&nbsp;date.tm_mon&nbsp;=&nbsp;months[month]&nbsp;-&nbsp;1;
+&nbsp;&nbsp;readDateTimePart(date.tm_mday,&nbsp;in);
+&nbsp;&nbsp;readDateTimePart(date.tm_hour,&nbsp;in);
+&nbsp;&nbsp;readDateTimePart(date.tm_min,&nbsp;in);
+&nbsp;&nbsp;readDateTimePart(date.tm_sec,&nbsp;in);
+&nbsp;&nbsp;readDateTimePart(date.tm_year,&nbsp;in);
+&nbsp;&nbsp;date.tm_year&nbsp;-=&nbsp;1900;
+&nbsp;&nbsp;date.tm_isdst&nbsp;=&nbsp;-1;
+&nbsp;&nbsp;std::time_t&nbsp;time&nbsp;=&nbsp;std::mktime(&amp;date);
+&nbsp;&nbsp;if&nbsp;(time&nbsp;==&nbsp;-1)
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;&quot;invalid&nbsp;system&nbsp;time&quot;;
+&nbsp;&nbsp;}
+&nbsp;&nbsp;tp_&nbsp;=&nbsp;SysClock::from_time_t(time);&nbsp;&nbsp;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;cast&nbsp;operator&nbsp;converts&nbsp;to&nbsp;time&nbsp;formatted&nbsp;string&nbsp;&gt;------------</span>
+
+DateTime::operator&nbsp;std::string()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;return&nbsp;time();
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;construct&nbsp;DateTime&nbsp;instance&nbsp;from&nbsp;time&nbsp;point&nbsp;&gt;----------------</span>
+
+DateTime::DateTime(const&nbsp;DateTime::TimePoint&amp;&nbsp;tp)&nbsp;:&nbsp;tp_(tp)&nbsp;<span class="toggleMethodDisplay">{}</span>
+
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;make&nbsp;a&nbsp;time&nbsp;from&nbsp;integral&nbsp;parts&nbsp;&gt;----------------------------</span>
+
+DateTime::TimePoint&nbsp;DateTime::makeTime(
+&nbsp;&nbsp;size_t&nbsp;year,&nbsp;size_t&nbsp;mon,&nbsp;size_t&nbsp;day,&nbsp;size_t&nbsp;hour,&nbsp;size_t&nbsp;min,&nbsp;size_t&nbsp;sec
+)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;struct&nbsp;std::tm&nbsp;t;
+&nbsp;&nbsp;t.tm_sec&nbsp;=&nbsp;sec;
+&nbsp;&nbsp;t.tm_min&nbsp;=&nbsp;min;
+&nbsp;&nbsp;t.tm_hour&nbsp;=&nbsp;hour;
+&nbsp;&nbsp;t.tm_mday&nbsp;=&nbsp;day;
+&nbsp;&nbsp;t.tm_mon&nbsp;=&nbsp;mon-1;
+&nbsp;&nbsp;t.tm_year&nbsp;=&nbsp;year&nbsp;-&nbsp;1900;
+&nbsp;&nbsp;t.tm_isdst&nbsp;=&nbsp;-1;
+&nbsp;&nbsp;std::time_t&nbsp;time&nbsp;=&nbsp;std::mktime(&amp;t);
+&nbsp;&nbsp;if&nbsp;(time&nbsp;==&nbsp;-1)
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;&quot;invalid&nbsp;system&nbsp;time&quot;;
+&nbsp;&nbsp;}
+&nbsp;&nbsp;return&nbsp;SysClock::from_time_t(time);
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;make&nbsp;duration&nbsp;from&nbsp;integral&nbsp;parts&nbsp;&gt;--------------------------</span>
+
+DateTime::Duration&nbsp;DateTime::makeDuration(
+&nbsp;&nbsp;size_t&nbsp;hour,&nbsp;size_t&nbsp;min,&nbsp;size_t&nbsp;sec,&nbsp;size_t&nbsp;millisec
+)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;Duration&nbsp;dur&nbsp;=&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;std::chrono::milliseconds(millisec)&nbsp;+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;std::chrono::seconds(sec)&nbsp;+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;std::chrono::minutes(min)&nbsp;+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;std::chrono::hours(hour);
+&nbsp;&nbsp;return&nbsp;dur;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;set&nbsp;time&nbsp;to&nbsp;system&nbsp;time&nbsp;&gt;------------------------------------</span>
+
+std::string&nbsp;DateTime::now()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;TimePoint&nbsp;tp&nbsp;=&nbsp;SysClock::now();
+&nbsp;&nbsp;std::time_t&nbsp;t&nbsp;=&nbsp;SysClock::to_time_t(tp);
+&nbsp;&nbsp;std::string&nbsp;ts&nbsp;=&nbsp;ctime(&amp;t);
+&nbsp;&nbsp;ts.resize(ts.size()&nbsp;-&nbsp;1);
+&nbsp;&nbsp;return&nbsp;ts;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;return&nbsp;internal&nbsp;time&nbsp;point&nbsp;&gt;---------------------------------</span>
+
+DateTime::TimePoint&nbsp;DateTime::timepoint()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;return&nbsp;tp_;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;return&nbsp;seconds&nbsp;from&nbsp;Jan&nbsp;1&nbsp;1990&nbsp;at&nbsp;midnight&nbsp;&gt;-----------------</span>
+
+size_t&nbsp;DateTime::ticks()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;auto&nbsp;int_sec&nbsp;=&nbsp;std::chrono::duration_cast&lt;std::chrono::seconds&gt;(tp_.time_since_epoch());
+&nbsp;&nbsp;return&nbsp;static_cast&lt;size_t&gt;(int_sec.count());
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;return&nbsp;formatted&nbsp;time&nbsp;string&nbsp;&gt;-------------------------------</span>
+
+std::string&nbsp;DateTime::time()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;std::time_t&nbsp;t&nbsp;=&nbsp;SysClock::to_time_t(tp_);
+&nbsp;&nbsp;std::string&nbsp;ts&nbsp;=&nbsp;ctime(&amp;t);
+&nbsp;&nbsp;ts.resize(ts.size()&nbsp;-&nbsp;1);
+&nbsp;&nbsp;return&nbsp;ts;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;compare&nbsp;DateTime&nbsp;instances&nbsp;&gt;---------------------------------</span>
+
+bool&nbsp;DateTime::operator&lt;(const&nbsp;DateTime&amp;&nbsp;dt)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;return&nbsp;tp_&nbsp;&lt;&nbsp;dt.tp_;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;compare&nbsp;DateTime&nbsp;instances&nbsp;&gt;---------------------------------</span>
+
+bool&nbsp;DateTime::operator&gt;(const&nbsp;DateTime&amp;&nbsp;dt)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;return&nbsp;tp_&nbsp;&gt;&nbsp;dt.tp_;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;compare&nbsp;DateTime&nbsp;instances&nbsp;&gt;---------------------------------</span>
+
+bool&nbsp;DateTime::operator==(const&nbsp;DateTime&amp;&nbsp;dt)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;return&nbsp;tp_&nbsp;==&nbsp;dt.tp_;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;compare&nbsp;DateTime&nbsp;instances&nbsp;&gt;---------------------------------</span>
+
+bool&nbsp;DateTime::operator!=(const&nbsp;DateTime&amp;&nbsp;dt)
+{
+&nbsp;&nbsp;return&nbsp;tp_&nbsp;!=&nbsp;dt.tp_;
+}
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;compare&nbsp;DateTime&nbsp;instances&nbsp;&gt;---------------------------------</span>
+
+bool&nbsp;DateTime::operator&lt;=(const&nbsp;DateTime&amp;&nbsp;dt)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;return&nbsp;tp_&nbsp;&lt;=&nbsp;dt.tp_;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;compare&nbsp;DateTime&nbsp;instances&nbsp;&gt;---------------------------------</span>
+
+bool&nbsp;DateTime::operator&gt;=(const&nbsp;DateTime&amp;&nbsp;dt)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;return&nbsp;tp_&nbsp;&gt;=&nbsp;dt.tp_;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;add&nbsp;a&nbsp;duration&nbsp;to&nbsp;DateTime&nbsp;instance&nbsp;&gt;------------------------</span>
+
+DateTime&nbsp;DateTime::operator+=(const&nbsp;DateTime::Duration&amp;&nbsp;dur)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;tp_&nbsp;+=&nbsp;dur;
+&nbsp;&nbsp;return&nbsp;*this;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;make&nbsp;DateTime&nbsp;from&nbsp;instance&nbsp;time&nbsp;plus&nbsp;duration&nbsp;&gt;-------------</span>
+
+DateTime&nbsp;DateTime::operator+(const&nbsp;DateTime::Duration&amp;&nbsp;dur)
+<span class="toggleMethodDisplay">{
+
+&nbsp;&nbsp;return&nbsp;DateTime(tp_&nbsp;+&nbsp;dur);
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;subtract&nbsp;a&nbsp;duration&nbsp;from&nbsp;instance&nbsp;&gt;--------------------------</span>
+
+DateTime&nbsp;DateTime::operator-=(const&nbsp;DateTime::Duration&amp;&nbsp;dur)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;tp_&nbsp;-=&nbsp;dur;
+&nbsp;&nbsp;return&nbsp;*this;
+}</span>
+<span class="toggleCommentsDisplay">//----&nbsp;make&nbsp;DateTime&nbsp;from&nbsp;instance&nbsp;time&nbsp;minus&nbsp;duration&nbsp;&gt;-------------</span>
+
+DateTime&nbsp;DateTime::operator-(const&nbsp;DateTime::Duration&amp;&nbsp;dur)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;return&nbsp;DateTime(tp_&nbsp;-&nbsp;dur);
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;return&nbsp;year&nbsp;count&nbsp;&gt;------------------------------------------</span>
+
+size_t&nbsp;DateTime::year()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;std::time_t&nbsp;t&nbsp;=&nbsp;SysClock::to_time_t(tp_);
+&nbsp;&nbsp;std::tm&nbsp;tm&nbsp;=&nbsp;*localtime(&amp;t);
+&nbsp;&nbsp;return&nbsp;tm.tm_year;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;return&nbsp;month&nbsp;count&nbsp;&gt;-----------------------------------------</span>
+
+size_t&nbsp;DateTime::month()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;std::time_t&nbsp;t&nbsp;=&nbsp;SysClock::to_time_t(tp_);
+&nbsp;&nbsp;std::tm&nbsp;tm&nbsp;=&nbsp;*localtime(&amp;t);
+&nbsp;&nbsp;return&nbsp;tm.tm_mon;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;return&nbsp;day&nbsp;count&nbsp;&gt;-------------------------------------------</span>
+
+size_t&nbsp;DateTime::day()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;std::time_t&nbsp;t&nbsp;=&nbsp;SysClock::to_time_t(tp_);
+&nbsp;&nbsp;std::tm&nbsp;tm&nbsp;=&nbsp;*localtime(&amp;t);
+&nbsp;&nbsp;return&nbsp;tm.tm_mday;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;return&nbsp;hour&nbsp;count&nbsp;&gt;------------------------------------------</span>
+
+size_t&nbsp;DateTime::hour()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;std::time_t&nbsp;t&nbsp;=&nbsp;SysClock::to_time_t(tp_);
+&nbsp;&nbsp;std::tm&nbsp;tm&nbsp;=&nbsp;*localtime(&amp;t);
+&nbsp;&nbsp;return&nbsp;tm.tm_hour;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;return&nbsp;minutes&nbsp;count&nbsp;&gt;---------------------------------------</span>
+
+size_t&nbsp;DateTime::minute()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;std::time_t&nbsp;t&nbsp;=&nbsp;SysClock::to_time_t(tp_);
+&nbsp;&nbsp;std::tm&nbsp;tm&nbsp;=&nbsp;*localtime(&amp;t);
+&nbsp;&nbsp;return&nbsp;tm.tm_min;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;return&nbsp;seconds&nbsp;count&nbsp;&gt;---------------------------------------</span>
+
+size_t&nbsp;DateTime::second()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;std::time_t&nbsp;t&nbsp;=&nbsp;SysClock::to_time_t(tp_);
+&nbsp;&nbsp;std::tm&nbsp;tm&nbsp;=&nbsp;*localtime(&amp;t);
+&nbsp;&nbsp;return&nbsp;tm.tm_sec;
+}</span>
+
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;test&nbsp;stub&nbsp;&gt;--------------------------------------------------</span>
+
+#ifdef&nbsp;TEST_DATETIME
+
+#include&nbsp;&lt;iostream&gt;
+#include&nbsp;&quot;../Utilities/StringUtilities/StringUtilities.h&quot;
+
+int&nbsp;main()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;Utilities::Title(&quot;Testing&nbsp;DateTime&nbsp;class&quot;);
+&nbsp;
+&nbsp;&nbsp;try&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;DateTime&nbsp;dt;
+&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n&nbsp;&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;dt.time();
+&nbsp;&nbsp;&nbsp;&nbsp;dt&nbsp;+=&nbsp;DateTime::makeDuration(24,&nbsp;0);
+&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n&nbsp;&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;dt.time();
+&nbsp;&nbsp;&nbsp;&nbsp;dt&nbsp;+=&nbsp;DateTime::makeDuration(1,&nbsp;10);
+&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n&nbsp;&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;dt.time();
+&nbsp;&nbsp;&nbsp;&nbsp;DateTime&nbsp;now;
+&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n&nbsp;&nbsp;using&nbsp;cast&nbsp;operator:&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;static_cast&lt;std::string&gt;(now);
+
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(now&nbsp;&lt;&nbsp;dt)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n&nbsp;&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;now.time()&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;is&nbsp;less&nbsp;than&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;dt.time();
+&nbsp;&nbsp;&nbsp;&nbsp;else
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n&nbsp;&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;now.time()&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;is&nbsp;not&nbsp;less&nbsp;than&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;dt.time();
+&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n&nbsp;&nbsp;now.ticks()&nbsp;=&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;now.ticks();
+&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n&nbsp;&nbsp;constructing&nbsp;DateTime&nbsp;from&nbsp;formated&nbsp;DateTime&nbsp;string&quot;;
+&nbsp;&nbsp;&nbsp;&nbsp;DateTime&nbsp;newDt(dt.time());
+&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n&nbsp;&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;newDt.time();
+&nbsp;&nbsp;}
+&nbsp;&nbsp;catch&nbsp;(std::exception&amp;&nbsp;ex)
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n\n&nbsp;&nbsp;--&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;ex.what()&nbsp;&lt;&lt;&nbsp;&quot;&nbsp;--&quot;;
+&nbsp;&nbsp;}
+&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n\n&quot;;
+}</span>
+#endif
+
+</pre> 
+</body> 
+</html> 

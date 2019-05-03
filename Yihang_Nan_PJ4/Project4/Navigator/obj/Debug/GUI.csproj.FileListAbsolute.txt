@@ -1,0 +1,9 @@
+C:\Yihang_Nan_PJ4\Project4\Navigator\obj\Debug\GUI.csprojAssemblyReference.cache
+C:\Yihang_Nan_PJ4\Project4\Navigator\obj\Debug\MainWindow.g.cs
+C:\Yihang_Nan_PJ4\Project4\Navigator\obj\Debug\SelectionWindow.g.cs
+C:\Yihang_Nan_PJ4\Project4\Navigator\obj\Debug\local.g.cs
+C:\Yihang_Nan_PJ4\Project4\Navigator\obj\Debug\App.g.cs
+C:\Yihang_Nan_PJ4\Project4\Navigator\obj\Debug\Navigator_MarkupCompile.cache
+C:\Yihang_Nan_PJ4\Project4\Navigator\obj\Debug\Navigator_MarkupCompile.lref
+C:\Yihang_Nan_PJ4\Project4\Navigator\obj\Debug\Navigator.exe
+C:\Yihang_Nan_PJ4\Project4\Navigator\obj\Debug\Navigator.pdb

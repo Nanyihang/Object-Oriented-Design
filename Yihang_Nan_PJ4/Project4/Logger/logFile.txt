@@ -1,0 +1,27 @@
+
+  Testing Logger Class
+ ======================
+  one
+  two
+  fini
+  starting again
+  and stopping again
+  log terminating now
+
+  Testing StaticLogger class
+ ----------------------------
+  static logger at work
+  static logger still at work
+  a log msg
+  a log msg
+  a log msg
+  a log msg
+  a log msg
+  suspending logger
+  a log msg written while log suspended
+  a log msg written while log suspended
+  a log msg written while log suspended
+  a log msg written while log suspended
+  a log msg written while log suspended
+  a log msg written after log resumed
+  stopping static logger

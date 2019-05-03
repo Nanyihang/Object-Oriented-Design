@@ -1,0 +1,232 @@
+<!Doctype html> 
+<html> 
+<head> 
+
+<style> 
+body {
+padding:15px 40px;
+font-family: Consolas;
+font-size: 1.25em;
+font-weight: normal;
+}
+span{
+display:inline;
+}
+div{
+position:fixed;
+top:10px;
+right:10px;
+}
+.toggleClassDisplay{}
+.toggleMethodDisplay{}
+.toggleCommentsDisplay{}
+
+</style> 
+<script> 
+function showHideClass(className) {
+let elems = document.getElementsByClassName(className);
+if (elems === null) {
+return;
+}
+for (let i = 0; i < elems.length; ++i) {
+let displayProp = elems[i].style.display;
+if (displayProp === 'none')
+elems[i].style['display'] = "inline";
+else
+elems[i].style['display'] = "none";
+    }
+}
+
+</script> 
+</head> 
+<body> 
+<div> 
+<button onclick="showHideClass('toggleClassDisplay')">Show/Hide Class Contents
+</button>
+<button onclick = "showHideClass('toggleMethodDisplay')">Show/Hide Method Contents
+</button>
+<button onclick = "showHideClass('toggleCommentsDisplay')">Show/Hide Comments Contenst
+</button>
+
+</div> 
+<pre> 
+#pragma&nbsp;once
+<span class="toggleCommentsDisplay">/////////////////////////////////////////////////////////////////////</span>
+<span class="toggleCommentsDisplay">//&nbsp;&nbsp;AbstrSynTree.h&nbsp;-&nbsp;Represents&nbsp;an&nbsp;Abstract&nbsp;Syntax&nbsp;Tree&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">//&nbsp;&nbsp;ver&nbsp;1.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">//&nbsp;&nbsp;Language:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Visual&nbsp;C++&nbsp;2015&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">//&nbsp;&nbsp;Platform:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dell&nbsp;XPS&nbsp;8900,&nbsp;Windows&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">//&nbsp;&nbsp;Application:&nbsp;&nbsp;&nbsp;Used&nbsp;to&nbsp;support&nbsp;parsing&nbsp;source&nbsp;code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">//&nbsp;&nbsp;Author:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jim&nbsp;Fawcett,&nbsp;CST&nbsp;4-187,&nbsp;Syracuse&nbsp;University&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(315)&nbsp;443-3948,&nbsp;jfawcett@twcny.rr.com&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">/////////////////////////////////////////////////////////////////////</span>
+<span class="toggleCommentsDisplay">/*
+&nbsp;&nbsp;Package&nbsp;Operations:
+&nbsp;&nbsp;==================
+&nbsp;&nbsp;This&nbsp;package&nbsp;defines&nbsp;an&nbsp;AbstrSynTree&nbsp;class&nbsp;and&nbsp;an&nbsp;ASTNode&nbsp;struct.&nbsp;&nbsp;
+&nbsp;&nbsp;Those&nbsp;provides&nbsp;support&nbsp;for&nbsp;building&nbsp;Abstract&nbsp;Syntax&nbsp;Trees&nbsp;during&nbsp;
+&nbsp;&nbsp;static&nbsp;source&nbsp;code&nbsp;analysis.
+
+&nbsp;&nbsp;Public&nbsp;Interface:
+&nbsp;&nbsp;=================
+&nbsp;&nbsp;AbstrSynTree&nbsp;ast(scopeStack);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="toggleCommentsDisplay">//&nbsp;create&nbsp;instance,&nbsp;passing&nbsp;in&nbsp;ScopeStack</span>
+&nbsp;&nbsp;ASTNode*&nbsp;pNode&nbsp;=&nbsp;ast.root();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="toggleCommentsDisplay">//&nbsp;get&nbsp;or&nbsp;set&nbsp;root&nbsp;of&nbsp;AST</span>
+&nbsp;&nbsp;ast.add(pNode);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="toggleCommentsDisplay">//&nbsp;add&nbsp;ASTNode&nbsp;to&nbsp;tree,&nbsp;linked&nbsp;to&nbsp;current&nbsp;scope</span>
+&nbsp;&nbsp;ASTNode*&nbsp;pNode&nbsp;=&nbsp;ast.find(myType);&nbsp;&nbsp;<span class="toggleCommentsDisplay">//&nbsp;retrieve&nbsp;ptr&nbsp;to&nbsp;ASTNode&nbsp;representing&nbsp;myType</span>
+&nbsp;&nbsp;ast.pop();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="toggleCommentsDisplay">//&nbsp;close&nbsp;current&nbsp;scope&nbsp;by&nbsp;poping&nbsp;top&nbsp;of&nbsp;scopeStack</span>
+
+&nbsp;&nbsp;Build&nbsp;Process:
+&nbsp;&nbsp;==============
+&nbsp;&nbsp;Required&nbsp;files
+&nbsp;&nbsp;-&nbsp;AbstrSynTree.h,&nbsp;AbstrSynTree.cpp,&nbsp;Utilities.h,&nbsp;Utilities.cpp
+
+&nbsp;&nbsp;Build&nbsp;commands&nbsp;(either&nbsp;one)
+&nbsp;&nbsp;-&nbsp;devenv&nbsp;CodeAnalysis.sln
+&nbsp;&nbsp;-&nbsp;cl&nbsp;/EHsc&nbsp;/DTEST_ABSTRSYNTREE&nbsp;AbstrSynTree.cpp&nbsp;Utilities.cpp&nbsp;/link&nbsp;setargv.obj
+
+&nbsp;&nbsp;Maintenance&nbsp;History:
+&nbsp;&nbsp;====================
+&nbsp;&nbsp;ver&nbsp;1.4&nbsp;:&nbsp;26&nbsp;Feb&nbsp;2017
+&nbsp;&nbsp;-&nbsp;added&nbsp;parentType_&nbsp;member&nbsp;to&nbsp;support&nbsp;better&nbsp;grammar&nbsp;analysis
+&nbsp;&nbsp;ver&nbsp;1.3&nbsp;:&nbsp;29&nbsp;Oct&nbsp;2016
+&nbsp;&nbsp;-&nbsp;added&nbsp;throw&nbsp;in&nbsp;ScopeStack&nbsp;if&nbsp;pop&nbsp;or&nbsp;peek&nbsp;empty&nbsp;stack
+&nbsp;&nbsp;ver&nbsp;1.2&nbsp;:&nbsp;28&nbsp;Oct&nbsp;2016
+&nbsp;&nbsp;-&nbsp;added&nbsp;test&nbsp;for&nbsp;interface&nbsp;in&nbsp;show()&nbsp;and&nbsp;Add(ASTNode*)
+&nbsp;&nbsp;ver&nbsp;1.1&nbsp;:&nbsp;22&nbsp;Aug&nbsp;2016
+&nbsp;&nbsp;-&nbsp;added&nbsp;access&nbsp;type&nbsp;and&nbsp;declaration&nbsp;type&nbsp;enumerations
+&nbsp;&nbsp;-&nbsp;added&nbsp;processing&nbsp;to&nbsp;store&nbsp;access&nbsp;level&nbsp;in&nbsp;AST
+&nbsp;&nbsp;-&nbsp;added&nbsp;more&nbsp;prologue&nbsp;comments
+&nbsp;&nbsp;ver&nbsp;1.0&nbsp;:&nbsp;05&nbsp;Aug&nbsp;2016
+&nbsp;&nbsp;-&nbsp;first&nbsp;release
+
+*/</span>
+
+#include&nbsp;&lt;string&gt;
+#include&nbsp;&lt;vector&gt;
+#include&nbsp;&lt;sstream&gt;
+#include&nbsp;&lt;unordered_map&gt;
+#include&nbsp;&lt;functional&gt;
+#include&nbsp;&quot;../SemiExpression/ITokenCollection.h&quot;
+#include&nbsp;&quot;../ScopeStack/ScopeStack.h&quot;
+
+namespace&nbsp;CodeAnalysis
+{
+&nbsp;&nbsp;enum&nbsp;Access&nbsp;
+&nbsp;&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;publ,&nbsp;prot,&nbsp;priv&nbsp;
+&nbsp;&nbsp;};
+
+&nbsp;&nbsp;enum&nbsp;DeclType&nbsp;
+&nbsp;&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;dataDecl,&nbsp;functionDecl,&nbsp;lambdaDecl,&nbsp;usingDecl&nbsp;
+&nbsp;&nbsp;};
+
+&nbsp;&nbsp;struct&nbsp;DeclarationNode
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;Lexer::ITokenCollection*&nbsp;pTc&nbsp;=&nbsp;nullptr;
+&nbsp;&nbsp;&nbsp;&nbsp;Access&nbsp;access_;
+&nbsp;&nbsp;&nbsp;&nbsp;DeclType&nbsp;declType_;
+&nbsp;&nbsp;&nbsp;&nbsp;std::string&nbsp;package_;
+&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;line_;
+&nbsp;&nbsp;};
+
+&nbsp;&nbsp;struct&nbsp;ASTNode
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;using&nbsp;Type&nbsp;=&nbsp;std::string;
+&nbsp;&nbsp;&nbsp;&nbsp;using&nbsp;Name&nbsp;=&nbsp;std::string;
+&nbsp;&nbsp;&nbsp;&nbsp;using&nbsp;Package&nbsp;=&nbsp;std::string;
+&nbsp;&nbsp;&nbsp;&nbsp;using&nbsp;Path&nbsp;=&nbsp;std::string;
+
+&nbsp;&nbsp;&nbsp;&nbsp;ASTNode();
+&nbsp;&nbsp;&nbsp;&nbsp;ASTNode(const&nbsp;Type&amp;&nbsp;type,&nbsp;const&nbsp;Name&amp;&nbsp;name);
+&nbsp;&nbsp;&nbsp;&nbsp;~ASTNode();
+&nbsp;&nbsp;&nbsp;&nbsp;Type&nbsp;type_;
+&nbsp;&nbsp;&nbsp;&nbsp;Type&nbsp;parentType_;
+&nbsp;&nbsp;&nbsp;&nbsp;Name&nbsp;name_;
+&nbsp;&nbsp;&nbsp;&nbsp;Package&nbsp;package_;
+&nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;path_;
+&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;startLineCount_;
+&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;endLineCount_;
+&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;complexity_;
+&nbsp;&nbsp;&nbsp;&nbsp;std::vector&lt;ASTNode*&gt;&nbsp;children_;
+&nbsp;&nbsp;&nbsp;&nbsp;std::vector&lt;DeclarationNode&gt;&nbsp;decl_;
+&nbsp;&nbsp;&nbsp;&nbsp;std::vector&lt;Lexer::ITokenCollection*&gt;&nbsp;statements_;
+&nbsp;&nbsp;&nbsp;&nbsp;std::string&nbsp;show(bool&nbsp;details&nbsp;=&nbsp;false);
+&nbsp;&nbsp;};
+
+&nbsp;&nbsp;class&nbsp;AbstrSynTree
+&nbsp;&nbsp;<span class="toggleClassDisplay">{
+&nbsp;&nbsp;public:
+&nbsp;&nbsp;&nbsp;&nbsp;using&nbsp;ClassName&nbsp;=&nbsp;std::string;
+&nbsp;&nbsp;&nbsp;&nbsp;using&nbsp;TypeMap&nbsp;=&nbsp;std::unordered_map&lt;ClassName,&nbsp;ASTNode*&gt;;
+
+&nbsp;&nbsp;&nbsp;&nbsp;AbstrSynTree(ScopeStack&lt;ASTNode*&gt;&amp;&nbsp;stack);
+&nbsp;&nbsp;&nbsp;&nbsp;~AbstrSynTree();
+&nbsp;&nbsp;&nbsp;&nbsp;ASTNode*&amp;&nbsp;root();
+&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;add(ASTNode*&nbsp;pNode);
+&nbsp;&nbsp;&nbsp;&nbsp;ASTNode*&nbsp;find(const&nbsp;ClassName&amp;&nbsp;type);
+&nbsp;&nbsp;&nbsp;&nbsp;ASTNode*&nbsp;pop();
+&nbsp;&nbsp;&nbsp;&nbsp;TypeMap&amp;&nbsp;typeMap();
+&nbsp;&nbsp;private:
+&nbsp;&nbsp;&nbsp;&nbsp;TypeMap&nbsp;typeMap_;
+&nbsp;&nbsp;&nbsp;&nbsp;ScopeStack&lt;ASTNode*&gt;&amp;&nbsp;stack_;
+&nbsp;&nbsp;&nbsp;&nbsp;ASTNode*&nbsp;pGlobalNamespace_;
+&nbsp;&nbsp;};</span>
+&nbsp;&nbsp;<span class="toggleCommentsDisplay">//----&lt;&nbsp;traverse&nbsp;AST&nbsp;and&nbsp;execute&nbsp;callobj&nbsp;on&nbsp;every&nbsp;node&nbsp;&gt;-------------</span>
+
+&nbsp;&nbsp;template&nbsp;&lt;typename&nbsp;CallObj&gt;
+&nbsp;&nbsp;void&nbsp;ASTWalk(ASTNode*&nbsp;pItem,&nbsp;CallObj&nbsp;co)
+&nbsp;&nbsp;<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;&nbsp;&nbsp;static&nbsp;size_t&nbsp;indentLevel&nbsp;=&nbsp;0;
+&nbsp;&nbsp;&nbsp;&nbsp;co(pItem,&nbsp;indentLevel);
+&nbsp;&nbsp;&nbsp;&nbsp;auto&nbsp;iter&nbsp;=&nbsp;pItem-&gt;children_.begin();
+&nbsp;&nbsp;&nbsp;&nbsp;++indentLevel;
+&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(iter&nbsp;!=&nbsp;pItem-&gt;children_.end())
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASTWalk(*iter,&nbsp;co);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++iter;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;--indentLevel;
+&nbsp;&nbsp;}</span>
+&nbsp;&nbsp;<span class="toggleCommentsDisplay">//----&lt;&nbsp;traverse&nbsp;AST&nbsp;and&nbsp;execute&nbsp;callobj&nbsp;on&nbsp;every&nbsp;node&nbsp;&gt;-------------</span>
+
+&nbsp;&nbsp;template&nbsp;&lt;typename&nbsp;CallObj&gt;
+&nbsp;&nbsp;void&nbsp;ASTWalkNoIndent(ASTNode*&nbsp;pItem,&nbsp;CallObj&nbsp;co)
+&nbsp;&nbsp;<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;&nbsp;&nbsp;co(pItem);
+&nbsp;&nbsp;&nbsp;&nbsp;auto&nbsp;iter&nbsp;=&nbsp;pItem-&gt;children_.begin();
+&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(iter&nbsp;!=&nbsp;pItem-&gt;children_.end())
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ASTWalkNoIndent(*iter,&nbsp;co);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++iter;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;}</span>
+&nbsp;&nbsp;<span class="toggleCommentsDisplay">//----&lt;&nbsp;compute&nbsp;complexities&nbsp;for&nbsp;each&nbsp;ASTNode&nbsp;&gt;--------------------</span>
+
+&nbsp;&nbsp;inline&nbsp;void&nbsp;complexityWalk(ASTNode*&nbsp;pItem,&nbsp;size_t&amp;&nbsp;count)
+&nbsp;&nbsp;<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;inCount&nbsp;=&nbsp;++count;
+&nbsp;&nbsp;&nbsp;&nbsp;auto&nbsp;iter&nbsp;=&nbsp;pItem-&gt;children_.begin();
+&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(iter&nbsp;!=&nbsp;pItem-&gt;children_.end())
+&nbsp;&nbsp;&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;complexityWalk(*iter,&nbsp;count);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;++iter;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;pItem-&gt;complexity_&nbsp;=&nbsp;count&nbsp;-&nbsp;inCount&nbsp;+&nbsp;1;
+&nbsp;&nbsp;}</span>
+&nbsp;&nbsp;<span class="toggleCommentsDisplay">//----&lt;&nbsp;compute&nbsp;complexities&nbsp;for&nbsp;each&nbsp;ASTNode&nbsp;&gt;--------------------</span>
+
+&nbsp;&nbsp;inline&nbsp;void&nbsp;complexityEval(ASTNode*&nbsp;pNode)
+&nbsp;&nbsp;<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;initialCount&nbsp;=&nbsp;0;
+&nbsp;&nbsp;&nbsp;&nbsp;complexityWalk(pNode,&nbsp;initialCount);
+&nbsp;&nbsp;}</span>
+}
+
+struct&nbsp;foobar&nbsp;{
+
+};
+
+</pre> 
+</body> 
+</html> 

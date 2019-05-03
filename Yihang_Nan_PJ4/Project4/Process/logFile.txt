@@ -1,0 +1,41 @@
+
+                                      CodeAnalysis - Version 1.4
+    ==============================================================================================
+     Tue Feb  5 14:41:16 2019
+     Path: "D:\CSE687\Project1\Process"
+     Args: Process.h, /m, /r, /f
+                                                                               
+           Code Metrics - Start Line, Size (lines/code), and Complexity (number of scopes)
+    ==============================================================================================
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+                             namespace                   Global Namespace       1       1      19
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+                 Process.h       class                            Process      40      21      12
+                 Process.h    function                           ~Process      42       2       1
+                 Process.h    function                            Process      69       7       1
+                 Process.h    function                        application     101       3       1
+                 Process.h    function                        commandLine     107       3       1
+                 Process.h    function                              title     115       4       1
+                 Process.h    function                             create     122      26       2
+                 Process.h    function              setCallBackProcessing     155       3       1
+                 Process.h    function                           callback     161       3       1
+                 Process.h    function                   registerCallback     175       8       1
+                 Process.h    function                   getProcessHandle     185       3       1
+                 Process.h    function                                  ]      61       1       1
+                 Process.h    function                               wToS      79       8       2
+                 Process.h    function                               sToW      90       8       2
+                 Process.h    function                WaitOrTimerCallback     167       5       1
+
+                          Functions Exceeding Metric Limits and Public Data
+    ==============================================================================================
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+
+
+
+    searched     3 dirs
+   processed     1 files

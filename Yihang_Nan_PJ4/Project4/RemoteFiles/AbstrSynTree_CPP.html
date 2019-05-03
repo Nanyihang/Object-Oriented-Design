@@ -1,0 +1,250 @@
+<!Doctype html> 
+<html> 
+<head> 
+
+<style> 
+body {
+padding:15px 40px;
+font-family: Consolas;
+font-size: 1.25em;
+font-weight: normal;
+}
+span{
+display:inline;
+}
+div{
+position:fixed;
+top:10px;
+right:10px;
+}
+.toggleClassDisplay{}
+.toggleMethodDisplay{}
+.toggleCommentsDisplay{}
+
+</style> 
+<script> 
+function showHideClass(className) {
+let elems = document.getElementsByClassName(className);
+if (elems === null) {
+return;
+}
+for (let i = 0; i < elems.length; ++i) {
+let displayProp = elems[i].style.display;
+if (displayProp === 'none')
+elems[i].style['display'] = "inline";
+else
+elems[i].style['display'] = "none";
+    }
+}
+
+</script> 
+</head> 
+<body> 
+<div> 
+<button onclick="showHideClass('toggleClassDisplay')">Show/Hide Class Contents
+</button>
+<button onclick = "showHideClass('toggleMethodDisplay')">Show/Hide Method Contents
+</button>
+<button onclick = "showHideClass('toggleCommentsDisplay')">Show/Hide Comments Contenst
+</button>
+
+</div> 
+<pre> 
+<span class="toggleCommentsDisplay">/////////////////////////////////////////////////////////////////////</span>
+<span class="toggleCommentsDisplay">//&nbsp;&nbsp;AbstrSynTree.cpp&nbsp;-&nbsp;Represents&nbsp;an&nbsp;Abstract&nbsp;Syntax&nbsp;Tree&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">//&nbsp;&nbsp;ver&nbsp;1.4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">//&nbsp;&nbsp;Language:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Visual&nbsp;C++&nbsp;2015&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">//&nbsp;&nbsp;Platform:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dell&nbsp;XPS&nbsp;8900,&nbsp;Windows&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">//&nbsp;&nbsp;Application:&nbsp;&nbsp;&nbsp;Used&nbsp;to&nbsp;support&nbsp;parsing&nbsp;source&nbsp;code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">//&nbsp;&nbsp;Author:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jim&nbsp;Fawcett,&nbsp;CST&nbsp;4-187,&nbsp;Syracuse&nbsp;University&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(315)&nbsp;443-3948,&nbsp;jfawcett@twcny.rr.com&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//</span>
+<span class="toggleCommentsDisplay">/////////////////////////////////////////////////////////////////////</span>
+
+#include&nbsp;&quot;AbstrSynTree.h&quot;
+#include&nbsp;&quot;../Utilities/Utilities.h&quot;
+
+using&nbsp;namespace&nbsp;CodeAnalysis;
+
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;default&nbsp;initialization&nbsp;for&nbsp;ASTNodes&nbsp;&gt;------------------------</span>
+
+ASTNode::ASTNode()&nbsp;
+&nbsp;&nbsp;:&nbsp;type_(&quot;anonymous&quot;),&nbsp;parentType_(&quot;namespace&quot;),&nbsp;name_(&quot;none&quot;),&nbsp;startLineCount_(0),&nbsp;endLineCount_(0),&nbsp;complexity_(0)&nbsp;<span class="toggleMethodDisplay">{}</span>
+
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;initialization&nbsp;accepting&nbsp;type&nbsp;and&nbsp;name&nbsp;&gt;---------------------</span>
+
+ASTNode::ASTNode(const&nbsp;Type&amp;&nbsp;type,&nbsp;const&nbsp;Name&amp;&nbsp;name)&nbsp;
+&nbsp;&nbsp;:&nbsp;type_(type),&nbsp;parentType_(&quot;namespace&quot;),&nbsp;name_(name),&nbsp;startLineCount_(0),&nbsp;endLineCount_(0),&nbsp;complexity_(0)&nbsp;<span class="toggleMethodDisplay">{}</span>
+
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;destructor&nbsp;deletes&nbsp;children,&nbsp;statements,&nbsp;declarations&nbsp;&gt;------</span>
+
+ASTNode::~ASTNode()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;for&nbsp;(auto&nbsp;pNode&nbsp;:&nbsp;children_)
+&nbsp;&nbsp;&nbsp;&nbsp;delete&nbsp;pNode;
+&nbsp;&nbsp;for&nbsp;(auto&nbsp;pNode&nbsp;:&nbsp;statements_)
+&nbsp;&nbsp;&nbsp;&nbsp;delete&nbsp;pNode;
+&nbsp;&nbsp;for&nbsp;(auto&nbsp;node&nbsp;:&nbsp;decl_)
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;delete&nbsp;node.pTc;
+&nbsp;&nbsp;}
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;returns&nbsp;string&nbsp;with&nbsp;ASTNode&nbsp;description&nbsp;&gt;--------------------</span>
+
+std::string&nbsp;ASTNode::show(bool&nbsp;details)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;std::ostringstream&nbsp;temp;
+&nbsp;&nbsp;temp&nbsp;&lt;&lt;&nbsp;&quot;(&quot;;
+&nbsp;&nbsp;temp&nbsp;&lt;&lt;&nbsp;type_&nbsp;&lt;&lt;&nbsp;&quot;,&nbsp;&quot;;
+&nbsp;&nbsp;temp&nbsp;&lt;&lt;&nbsp;parentType_&nbsp;&lt;&lt;&nbsp;&quot;,&nbsp;&quot;;
+&nbsp;&nbsp;if(name_&nbsp;!=&nbsp;&quot;none&quot;)
+&nbsp;&nbsp;&nbsp;&nbsp;temp&nbsp;&lt;&lt;&nbsp;name_&nbsp;&lt;&lt;&nbsp;&quot;,&nbsp;&quot;;
+&nbsp;&nbsp;if(type_&nbsp;==&nbsp;&quot;namespace&quot;&nbsp;||&nbsp;type_&nbsp;==&nbsp;&quot;class&quot;&nbsp;||&nbsp;type_&nbsp;==&nbsp;&quot;interface&quot;&nbsp;||&nbsp;type_&nbsp;==&nbsp;&quot;struct&quot;&nbsp;||&nbsp;type_&nbsp;==&nbsp;&quot;function&quot;)
+&nbsp;&nbsp;&nbsp;&nbsp;temp&nbsp;&lt;&lt;&nbsp;package_&nbsp;&lt;&lt;&nbsp;&quot;,&nbsp;&quot;;
+&nbsp;&nbsp;if&nbsp;(details)
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;temp&nbsp;&lt;&lt;&nbsp;&quot;num&nbsp;children:&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;children_.size()&nbsp;&lt;&lt;&nbsp;&quot;,&nbsp;&quot;;
+&nbsp;&nbsp;&nbsp;&nbsp;temp&nbsp;&lt;&lt;&nbsp;&quot;num&nbsp;statements:&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;statements_.size()&nbsp;&lt;&lt;&nbsp;&quot;,&nbsp;&quot;;
+&nbsp;&nbsp;}
+&nbsp;&nbsp;temp&nbsp;&lt;&lt;&nbsp;&quot;line:&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;startLineCount_&nbsp;&lt;&lt;&nbsp;&quot;,&nbsp;&quot;;
+&nbsp;&nbsp;temp&nbsp;&lt;&lt;&nbsp;&quot;size:&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;endLineCount_&nbsp;-&nbsp;startLineCount_&nbsp;+&nbsp;1&nbsp;&lt;&lt;&nbsp;&quot;,&nbsp;&quot;;
+&nbsp;&nbsp;temp&nbsp;&lt;&lt;&nbsp;&quot;cplx:&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;complexity_;
+&nbsp;&nbsp;<span class="toggleCommentsDisplay">//temp&nbsp;&lt;&lt;&nbsp;&quot;path:&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;path_;</span>
+&nbsp;&nbsp;temp&nbsp;&lt;&lt;&nbsp;&quot;)&quot;;
+&nbsp;&nbsp;return&nbsp;temp.str();
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;create&nbsp;instance&nbsp;and&nbsp;initialize&nbsp;first&nbsp;element&nbsp;&gt;---------------</span>
+<span class="toggleCommentsDisplay">/*
+*&nbsp;&nbsp;-&nbsp;Every&nbsp;AST&nbsp;holds&nbsp;an&nbsp;ASTNode&nbsp;representing&nbsp;the&nbsp;global&nbsp;namespace
+*&nbsp;&nbsp;-&nbsp;Its&nbsp;children&nbsp;will&nbsp;be&nbsp;namespaces,&nbsp;classes,&nbsp;and&nbsp;global&nbsp;data
+*/</span>
+AbstrSynTree::AbstrSynTree(ScopeStack&lt;ASTNode*&gt;&amp;&nbsp;stack)&nbsp;:&nbsp;stack_(stack)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;pGlobalNamespace_&nbsp;=&nbsp;new&nbsp;ASTNode(&quot;namespace&quot;,&nbsp;&quot;Global&nbsp;Namespace&quot;);
+&nbsp;&nbsp;pGlobalNamespace_-&gt;startLineCount_&nbsp;=&nbsp;1;
+&nbsp;&nbsp;pGlobalNamespace_-&gt;endLineCount_&nbsp;=&nbsp;1;
+&nbsp;&nbsp;stack_.push(pGlobalNamespace_);
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;destroy&nbsp;instance&nbsp;and&nbsp;all&nbsp;it's&nbsp;ASTNodes&nbsp;&gt;---------------------</span>
+<span class="toggleCommentsDisplay">/*
+*&nbsp;&nbsp;AST&nbsp;destructor&nbsp;only&nbsp;has&nbsp;to&nbsp;delete&nbsp;its&nbsp;root.&nbsp;&nbsp;The&nbsp;root&nbsp;will&nbsp;then
+*&nbsp;&nbsp;delete&nbsp;its&nbsp;children,&nbsp;causing&nbsp;the&nbsp;children&nbsp;to&nbsp;delete&nbsp;their&nbsp;children,
+*&nbsp;&nbsp;yada,&nbsp;yada,&nbsp;yada
+*/</span>
+AbstrSynTree::~AbstrSynTree()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;delete&nbsp;pGlobalNamespace_;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;return&nbsp;or&nbsp;accept&nbsp;pointer&nbsp;to&nbsp;global&nbsp;namespace&nbsp;&gt;---------------</span>
+
+ASTNode*&amp;&nbsp;AbstrSynTree::root()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;return&nbsp;pGlobalNamespace_;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;return&nbsp;AST&nbsp;typemap&nbsp;&gt;-----------------------------------------</span>
+<span class="toggleCommentsDisplay">/*
+*&nbsp;&nbsp;Type&nbsp;map&nbsp;holds&nbsp;ClassName&nbsp;keys&nbsp;linked&nbsp;to&nbsp;each&nbsp;class's&nbsp;ASTNode
+*/</span>
+AbstrSynTree::TypeMap&amp;&nbsp;AbstrSynTree::typeMap()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;return&nbsp;typeMap_;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;add&nbsp;ASTNode&nbsp;ptr&nbsp;to&nbsp;stack&nbsp;top&nbsp;element's&nbsp;children&nbsp;and&nbsp;push&nbsp;&gt;---</span>
+<span class="toggleCommentsDisplay">/*
+&nbsp;*&nbsp;-&nbsp;Add&nbsp;new&nbsp;scope&nbsp;to&nbsp;ScopeStack&nbsp;after&nbsp;linking&nbsp;to&nbsp;its&nbsp;parent&nbsp;scope
+&nbsp;*&nbsp;-&nbsp;If&nbsp;type&nbsp;is&nbsp;a&nbsp;class&nbsp;or&nbsp;struct,&nbsp;add&nbsp;to&nbsp;typeMap
+&nbsp;*/</span>
+void&nbsp;AbstrSynTree::add(ASTNode*&nbsp;pNode)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;if&nbsp;(stack_.size()&nbsp;&gt;&nbsp;0)
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;pNode-&gt;parentType_&nbsp;=&nbsp;stack_.top()-&gt;type_;
+&nbsp;&nbsp;&nbsp;&nbsp;stack_.top()-&gt;children_.push_back(pNode);&nbsp;&nbsp;<span class="toggleCommentsDisplay">//&nbsp;add&nbsp;as&nbsp;child&nbsp;of&nbsp;stack&nbsp;top</span>
+&nbsp;&nbsp;}
+&nbsp;&nbsp;else
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;pNode-&gt;parentType_&nbsp;=&nbsp;&quot;&quot;;
+&nbsp;&nbsp;}
+&nbsp;&nbsp;stack_.push(pNode);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="toggleCommentsDisplay">//&nbsp;push&nbsp;onto&nbsp;stack</span>
+&nbsp;&nbsp;if&nbsp;(pNode-&gt;type_&nbsp;==&nbsp;&quot;class&quot;&nbsp;||&nbsp;pNode-&gt;type_&nbsp;==&nbsp;&quot;struct&quot;&nbsp;||&nbsp;pNode-&gt;type_&nbsp;==&nbsp;&quot;interface&quot;)
+&nbsp;&nbsp;&nbsp;&nbsp;typeMap_[pNode-&gt;name_]&nbsp;=&nbsp;pNode;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;pop&nbsp;stack's&nbsp;top&nbsp;element&nbsp;&gt;------------------------------------</span>
+<span class="toggleCommentsDisplay">/*
+&nbsp;*&nbsp;&nbsp;-&nbsp;called&nbsp;at&nbsp;end&nbsp;of&nbsp;scope
+&nbsp;*&nbsp;&nbsp;-&nbsp;pop'd&nbsp;ASTNode&nbsp;is&nbsp;still&nbsp;linked&nbsp;to&nbsp;AST
+&nbsp;*/</span>
+ASTNode*&nbsp;AbstrSynTree::pop()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;if(stack_.size()&nbsp;&gt;&nbsp;0)
+&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;stack_.pop();
+&nbsp;&nbsp;return&nbsp;nullptr;
+}</span>
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;find&nbsp;a&nbsp;type&nbsp;node&nbsp;using&nbsp;typeMap&nbsp;&gt;-----------------------------</span>
+<span class="toggleCommentsDisplay">/*
+*&nbsp;&nbsp;Retrieve&nbsp;ASTNode&nbsp;of&nbsp;class&nbsp;if&nbsp;it&nbsp;exists
+*/</span>
+ASTNode*&nbsp;AbstrSynTree::find(const&nbsp;ClassName&amp;&nbsp;className)
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;auto&nbsp;iter&nbsp;=&nbsp;typeMap_.find(className);
+&nbsp;&nbsp;if&nbsp;(iter&nbsp;!=&nbsp;typeMap_.end())
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;iter-&gt;second;
+&nbsp;&nbsp;}
+&nbsp;&nbsp;return&nbsp;nullptr;
+}</span>
+
+<span class="toggleCommentsDisplay">//----&lt;&nbsp;Test&nbsp;Stub&nbsp;&gt;--------------------------------------------------</span>
+<span class="toggleCommentsDisplay">/*
+*&nbsp;&nbsp;Demonstrates&nbsp;that&nbsp;AbstrSynTree&nbsp;can&nbsp;build&nbsp;a&nbsp;simple&nbsp;Abstract
+*&nbsp;&nbsp;Syntax&nbsp;Tree&nbsp;and&nbsp;display&nbsp;its&nbsp;contents.
+*/</span>
+#ifdef&nbsp;TEST_ABSTRSYNTREE
+
+#include&nbsp;&lt;functional&gt;
+#include&nbsp;&lt;iostream&gt;
+
+using&nbsp;Utils&nbsp;=&nbsp;Utilities::StringHelper;
+
+int&nbsp;main()
+<span class="toggleMethodDisplay">{
+&nbsp;&nbsp;Utils::Title(&quot;Testing&nbsp;AbstrSynTree&nbsp;and&nbsp;ASTNode&quot;);
+
+&nbsp;&nbsp;ScopeStack&lt;ASTNode*&gt;&nbsp;stack;
+&nbsp;&nbsp;AbstrSynTree&nbsp;ast(stack);
+&nbsp;&nbsp;ASTNode*&nbsp;pX&nbsp;=&nbsp;new&nbsp;ASTNode(&quot;class&quot;,&nbsp;&quot;X&quot;);
+&nbsp;&nbsp;ast.add(pX);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="toggleCommentsDisplay">//&nbsp;add&nbsp;X&nbsp;scope</span>
+&nbsp;&nbsp;ASTNode*&nbsp;pf1&nbsp;=&nbsp;new&nbsp;ASTNode(&quot;function&quot;,&nbsp;&quot;f1&quot;);
+&nbsp;&nbsp;ast.add(pf1);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="toggleCommentsDisplay">//&nbsp;add&nbsp;f1&nbsp;scope</span>
+&nbsp;&nbsp;ASTNode*&nbsp;pc1&nbsp;=&nbsp;new&nbsp;ASTNode(&quot;control&quot;,&nbsp;&quot;if&quot;);
+&nbsp;&nbsp;ast.add(pc1);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="toggleCommentsDisplay">//&nbsp;add&nbsp;c1&nbsp;scope</span>
+&nbsp;&nbsp;ast.pop();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="toggleCommentsDisplay">//&nbsp;end&nbsp;c1&nbsp;scope</span>
+&nbsp;&nbsp;ast.pop();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="toggleCommentsDisplay">//&nbsp;end&nbsp;f1&nbsp;scope</span>
+&nbsp;&nbsp;ASTNode*&nbsp;pf2&nbsp;=&nbsp;new&nbsp;ASTNode(&quot;function&quot;,&nbsp;&quot;f2&quot;);
+&nbsp;&nbsp;ast.add(pf2);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="toggleCommentsDisplay">//&nbsp;add&nbsp;f2&nbsp;scope</span>
+&nbsp;&nbsp;ast.pop();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="toggleCommentsDisplay">//&nbsp;end&nbsp;f2&nbsp;scope</span>
+&nbsp;&nbsp;ast.pop();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="toggleCommentsDisplay">//&nbsp;end&nbsp;X&nbsp;scope</span>
+
+&nbsp;&nbsp;std::function&lt;void(ASTNode*,&nbsp;size_t)&gt;&nbsp;co&nbsp;=&nbsp;[](ASTNode*&nbsp;pNode,&nbsp;size_t&nbsp;indentLevel)&nbsp;
+&nbsp;&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n&nbsp;&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;std::string(2&nbsp;*&nbsp;indentLevel,&nbsp;'&nbsp;')&nbsp;&lt;&lt;&nbsp;pNode-&gt;show();
+&nbsp;&nbsp;};
+
+&nbsp;&nbsp;ASTWalk(ast.root(),&nbsp;co);
+&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n&quot;;
+
+&nbsp;&nbsp;Utils::title(&quot;testing&nbsp;AbstrSynTree::find&quot;);
+
+&nbsp;&nbsp;ASTNode*&nbsp;pFind&nbsp;=&nbsp;ast.find(&quot;X&quot;);
+&nbsp;&nbsp;if&nbsp;(pFind&nbsp;!=&nbsp;nullptr)
+&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n&nbsp;&nbsp;&quot;&nbsp;&lt;&lt;&nbsp;pFind-&gt;show();
+&nbsp;&nbsp;else
+&nbsp;&nbsp;&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n&nbsp;&nbsp;could&nbsp;not&nbsp;find&nbsp;ASTNode&nbsp;for&nbsp;class&nbsp;X&quot;;
+
+&nbsp;&nbsp;std::cout&nbsp;&lt;&lt;&nbsp;&quot;\n\n&quot;;
+}</span>
+
+#endif
+
+</pre> 
+</body> 
+</html> 

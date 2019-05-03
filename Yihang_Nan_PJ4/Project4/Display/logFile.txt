@@ -1,0 +1,33 @@
+
+                                      CodeAnalysis - Version 1.4
+    ==============================================================================================
+     Tue Feb  5 14:40:30 2019
+     Path: "D:\CSE687\Project1\Display"
+     Args: Display.h, /m, /r, /f
+                                                                               
+           Code Metrics - Start Line, Size (lines/code), and Complexity (number of scopes)
+    ==============================================================================================
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+                             namespace                   Global Namespace       1       1      11
+
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+                 Display.h       class                            Display      37      11      10
+                 Display.h    function                           ~Display      39       2       1
+                 Display.h    function                            Display      51       3       1
+                 Display.h    function                    get_browserpath      56      15       3
+                 Display.h    function                               show      73      38       3
+                 Display.h    function                                  ]      95       1       1
+                 Display.h    function                       line_message     114       3       1
+
+                          Functions Exceeding Metric Limits and Public Data
+    ==============================================================================================
+                 file name        type                               name    line    size    cplx
+    -----------------------  ----------  ---------------------------------  ------  ------  ------
+
+
+
+    searched     3 dirs
+   processed     1 files
